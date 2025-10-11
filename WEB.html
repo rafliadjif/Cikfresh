@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>SayurSegar — Toko Sayur Online</title>
+        <meta name="description" content="Toko sayur online lokal: pesan sayur segar bersama CIKFRESH, dikirim ke rumah." />
+    <style>:root{--green:#2e8b57;--accent:#f2a541;--muted:#6b7280;--bg:#f7faf7}*{box-sizing:border-box}
+         body{margin:0;font-family:Inter, system-ui, Arial, sans-serif;background:var(--bg);color:#0f172a}
+         header{background:white;box-shadow:0 2px 6px rgba(0,0,0,.06);position:sticky;top:0;z-index:50}
+         .container{max-width:1100px;margin:0 auto;padding:20px}
+         nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+         .brand{display:flex;align-items:center;gap:12px}
+         .logo{width:44px;height:44px;background:linear-gradient(135deg,var(--green),#38b000);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+         nav a{margin-left:12px;color:var(--muted);text-decoration:none}
+         .hero{display:flex;gap:24px;align-items:center; padding:36px 0}
+         .hero-left{flex:1}
+         .hero-right{flex:1}
+         h1{margin:0;font-size:30px}
+         p.lead{color:var(--muted);margin-top:8px}
+         .cta{display:inline-block;margin-top:14px;background:var(--green);color:white;padding:10px 16px;border-radius:10px;text-decoration:none}
+         .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+         .card{background:white;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,.06);display:flex;flex-direction:column}
+         .img{height:120px;border-radius:10px;background:linear-gradient(180deg,#e6ffed,#f7fff7);display:flex;align-items:center;justify-content:center;font-weight:700;color:#1b4332}
+         .meta{margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+         .price{font-weight:700}
+         .muted{color:var(--muted);font-size:14px}
+         .btn{background:var(--green);color:white;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+         .cart{position:fixed;right:18px;bottom:18px;background:linear-gradient(180deg,#fff,#f8fff8);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,.08);width:320px;max-width:90%;}
+         .cart h3{margin:0 0 8px 0}
+         .cart-list{max-height:260px;overflow:auto;margin-bottom:8px}
+         .cart-item{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed #e6e6e6}
+         .cart-footer{display:flex;justify-content:space-between;align-items:center}
+         .small{font-size:13px}
+         footer{padding:20px 0;color:var(--muted)}
+    /* responsive */
+    @media (max-width:800px){.hero{flex-direction:column}.hero-right{order:-1}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">SS</div>
+        <div>
+          <div style="font-weight:700">SayurSegar</div>
+          <div class="small muted">Sayur lokal, kirim cepat</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#produk">Produk</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Pesan sayur lebih mudah bersama CIKFRESH</h1>
+        <p class="lead">Website sederhana untuk menampilkan produk, keranjang, dan form pemesanan. Bisa langsung dipakai sebagai tugas atau dikembangkan jadi toko online nyata.</p>
+        <a class="cta" href="#produk" onclick="document.querySelector('#produk').scrollIntoView({behavior:'smooth'})">Lihat Produk</a>
+      </div>
+      <div class="hero-right">
+        <div style="background:white;padding:16px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,.06)">
+          <strong>Tips singkat:</strong>
+          <ul style="margin:8px 0 0;padding-left:18px;color:var(--muted)">
+            <li>Foto produk rapi & natural</li>
+            <li>Tulis berat dan harga jelas (contoh: 1 ikat / Rp 8.000)</li>
+            <li>Tentukan area antar dan biaya kirim</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="produk">
+      <h2>Produk Kami</h2>
+      <div class="grid" id="productGrid">
+        <!-- product cards injected by JS -->
+      </div>
+    </section>
+
+    <section id="tentang" style="margin-top:28px">
+      <h2>Tentang SayurSegar</h2>
+      <p class="muted">Sayur Segar adalah contoh toko sayur lokal untuk tugas sekolah/kuliah. Disarankan untuk menambahkan informasi usaha Anda: alamat, jam usaha, serta metode pembayaran & pengiriman yang tersedia.</p>
+    </section>
+
+    <section id="kontak" style="margin-top:20px">
+      <h2>Kontak & Order Manual</h2>
+      <p class="muted">Jika pelanggan ingin pesan lewat WhatsApp: sertakan nomor WA aktif dan contoh pesan pemesanan (mis. "Pesan 2 ikat bayam, antar ke Jl. Merdeka 10").</p>
+    </section>
+  </main>
+
+  <!-- Cart (fixed) -->
+  <div class="cart" id="cartBox">
+    <h3>Keranjang</h3>
+    <div class="cart-list" id="cartList">
+      <div class="muted small">Keranjang kosong</div>
+    </div>
+    <div class="cart-footer">
+      <div>
+        <div class="small muted">Total</div>
+        <div id="cartTotal" style="font-weight:700">Rp 0</div>
+      </div>
+      <div>
+        <button class="btn" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout modal (simple) -->
+  <div id="checkoutModal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,.35);align-items:center;justify-content:center;padding:20px">
+    <div style="background:white;border-radius:12px;padding:18px;max-width:720px;width:100%">
+      <h3>Buat Pesanan</h3>
+      <form id="orderForm">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <input name="name" placeholder="Nama" required />
+          <input name="phone" placeholder="No. HP (WA)" required />
+        </div>
+        <textarea name="address" placeholder="Alamat lengkap (termasuk kec/kab)" style="margin-top:8px" required></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <label class="small muted">Metode Bayar</label>
+          <select name="payment">
+            <option value="cod">Bayar di tempat (COD)</option>
+            <option value="transfer">Transfer / e-wallet</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+          <button type="button" onclick="closeCheckout()" style="padding:8px 12px;border-radius:8px;border:1px solid #eee">Batal</button>
+          <button class="btn" type="submit">Kirim Pesanan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div class="muted">© SayurSegar — Prototype</div>
+      <div style="text-align:right" class="muted small">Buat untuk tugas — kembangkan dengan sistem pembayaran & pengiriman nyata jika diperlukan</div>
+    </div>
+  </footer>
+
+  <script>
+    // DATA PRODUK: edit sesuai kebutuhan tugas/produkmu
+    const products = [
+      {id:1,name:'Bayam',unit:'1 ikat',price:8000,desc:'Bayam segar lokal'},
+      {id:2,name:'Kangkung',unit:'1 ikat',price:7000,desc:'Kangkung hijau rimbun'},
+      {id:3,name:'Wortel',unit:'500 gr',price:12000,desc:'Wortel manis & renyah'},
+      {id:4,name:'Tomat',unit:'250 gr',price:9000,desc:'Tomat merah segar'},
+      {id:5,name:'Cabai Merah',unit:'100 gr',price:15000,desc:'Pedas segar (harga per 100g)'},
+      {id:6,name:'Kentang',unit:'1 kg',price:18000,desc:'Kentang lokal'}
+    ];
+
+    // RENDER PRODUCTS
+    const grid = document.getElementById('productGrid');
+    products.forEach(p=>{
+      const card = document.createElement('div');card.className='card';
+      card.innerHTML = `
+        <div class="img">${p.name}</div>
+        <div style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:700">${p.name}</div><div class="muted">${p.unit}</div></div>
+          <div class="meta"><div class="muted small">${p.desc}</div><div class="price">Rp ${numberWithCommas(p.price)}</div></div>
+          <div style="margin-top:10px;display:flex;justify-content:flex-end"><button class="btn" onclick='addToCart(${p.id})'>Tambah</button></div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // CART
+    let cart = []; // {id, qty}
+    const cartList = document.getElementById('cartList');
+    const cartTotal = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    function addToCart(id){
+      const found = cart.find(ci=>ci.id===id);
+      if(found) found.qty++;
+      else cart.push({id,qty:1});
+      renderCart();
+    }
+
+    function removeFromCart(id){
+      cart = cart.filter(c=>c.id!==id);
+      renderCart();
+    }
+
+    function changeQty(id,delta){
+      const item = cart.find(c=>c.id===id);
+      if(!item) return;
+      item.qty += delta;
+      if(item.qty<1) removeFromCart(id);
+      renderCart();
+    }
+
+    function renderCart(){
+      cartList.innerHTML='';
+      if(cart.length===0){cartList.innerHTML='<div class="muted small">Keranjang kosong</div>';cartTotal.textContent='Rp 0';checkoutBtn.disabled=true;return}
+      let total=0;
+      cart.forEach(ci=>{
+        const p = products.find(x=>x.id===ci.id);
+        const line = document.createElement('div');line.className='cart-item';
+        const subtotal = p.price * ci.qty; total += subtotal;
+        line.innerHTML = `<div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="small muted">${p.unit} • Rp ${numberWithCommas(p.price)}</div></div><div style="text-align:right"><div>Rp ${numberWithCommas(subtotal)}</div><div style="margin-top:6px"><button onclick='changeQty(${p.id},1)' style="margin-right:6px">+</button><button onclick='changeQty(${p.id},-1)'>-</button><div style="margin-top:6px"><button onclick='removeFromCart(${p.id})' style="border:none;background:transparent;color:#c33;cursor:pointer">Hapus</button></div></div>`;
+        cartList.appendChild(line);
+      });
+      cartTotal.textContent='Rp '+numberWithCommas(total);
+      checkoutBtn.disabled=false;
+    }
+
+    function numberWithCommas(x){return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+
+    // CHECKOUT
+    const checkoutModal = document.getElementById('checkoutModal');
+    function openCheckout(){checkoutModal.style.display='flex';}
+    function closeCheckout(){checkoutModal.style.display='none';}
+
+    document.getElementById('orderForm').addEventListener('submit',function(e){
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const order = {
+        customer: form.get('name'),
+        phone: form.get('phone'),
+        address: form.get('address'),
+        payment: form.get('payment'),
+        items: cart.map(ci=>({product:products.find(p=>p.id===ci.id).name,qty:ci.qty,unit:products.find(p=>p.id===ci.id).unit,price:products.find(p=>p.id===ci.id).price})),
+        total: cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0),
+        created: new Date().toLocaleString()
+      };
+
+      // Simple: open mail client with order summary (prototype). Replace with API call to backend or payment gateway for production.
+      const subject = encodeURIComponent('Pesanan Sayur - ' + order.customer);
+      let body = `Halo, saya ingin memesan:%0D%0A`;
+      order.items.forEach(it=>{body += `- ${it.qty} x ${it.product} (${it.unit}) : Rp ${numberWithCommas(it.price * it.qty)}%0D%0A`});
+      body += `%0D%0ATotal: Rp ${numberWithCommas(order.total)}%0D%0A`;
+      body += `Nama: ${order.customer}%0D%0ANo HP: ${order.phone}%0D%0AAlamat: ${order.address}%0D%0AMetode bayar: ${order.payment}%0D%0A`; 
+
+      window.location.href = `mailto:youremail@domain.com?subject=${subject}&body=${encodeURIComponent(decodeURIComponent(body))}`;
+
+      // also show a simple success notice
+      alert('Pesanan disiapkan untuk dikirim lewat email. (Ini prototype — ganti mailto dengan backend nyata untuk produksi)');
+      // reset
+      cart = [];
+      renderCart();
+      closeCheckout();
+    });
+
+    // initial render
+    renderCart();
+
+    // NOTES: Untuk produksi, langkah selanjutnya:
+    // 1) Buat backend (mis. Firebase, Supabase, atau PHP + MySQL) untuk menyimpan pesanan.
+    // 2) Integrasi payment gateway (Midtrans / Xendit / Doku) untuk Indonesia.
+    // 3) Integrasi kurir atau atur biaya kirim manual berdasarkan zona.
+    // 4) Tambah admin panel untuk melihat & merubah status pesanan.
+
+  </script>
+</body>
+</html>
