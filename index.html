@@ -1,248 +1,359 @@
 <!doctype html>
 <html lang="id">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>SayurSegar — Toko Sayur Online</title>
-        <meta name="description" content="Toko sayur online lokal: pesan sayur segar bersama CIKFRESH, dikirim ke rumah." />
-    <style>:root{--green:#2e8b57;--accent:#f2a541;--muted:#6b7280;--bg:#f7faf7}*{box-sizing:border-box}
-         body{margin:0;font-family:Inter, system-ui, Arial, sans-serif;background:var(--bg);color:#0f172a}
-         header{background:white;box-shadow:0 2px 6px rgba(0,0,0,.06);position:sticky;top:0;z-index:50}
-         .container{max-width:1100px;margin:0 auto;padding:20px}
-         nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-         .brand{display:flex;align-items:center;gap:12px}
-         .logo{width:44px;height:44px;background:linear-gradient(135deg,var(--green),#38b000);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
-         nav a{margin-left:12px;color:var(--muted);text-decoration:none}
-         .hero{display:flex;gap:24px;align-items:center; padding:36px 0}
-         .hero-left{flex:1}
-         .hero-right{flex:1}
-         h1{margin:0;font-size:30px}
-         p.lead{color:var(--muted);margin-top:8px}
-         .cta{display:inline-block;margin-top:14px;background:var(--green);color:white;padding:10px 16px;border-radius:10px;text-decoration:none}
-         .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-         .card{background:white;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,.06);display:flex;flex-direction:column}
-         .img{height:160px;border-radius:10px;background-color:#f0f0f0;font-weight:700;color:#1b4332; width: 100%; object-fit: cover;}
-         .meta{margin-top:10px;display:flex;justify-content:space-between;align-items:center}
-         .price{font-weight:700}
-         .muted{color:var(--muted);font-size:14px}
-         .btn{background:var(--green);color:white;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
-         .cart{position:fixed;right:18px;bottom:18px;background:linear-gradient(180deg,#fff,#f8fff8);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,.08);width:320px;max-width:90%;}
-         .cart h3{margin:0 0 8px 0}
-         .cart-list{max-height:260px;overflow:auto;margin-bottom:8px}
-         .cart-item{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed #e6e6e6}
-         .cart-footer{display:flex;justify-content:space-between;align-items:center}
-         .small{font-size:13px}
-         footer{padding:20px 0;color:var(--muted)}
-    /* responsive */
-    @media (max-width:800px){.hero{flex-direction:column}.hero-right{order:-1}}
-  </style>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CIKFRESH — Toko Sayur Online</title>
+    <meta name="description" content="Toko sayur online lokal: pesan sayur segar bersama CIKFRESH, dikirim ke rumah." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #2e8b57;
+            --accent: #f2a541;
+            --muted: #6b7280;
+            --bg: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Inter', system-ui, Arial, sans-serif; background: var(--bg); color: #0f172a; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        header { background: var(--card-bg); box-shadow: 0 2px 6px rgba(0,0,0,.06); position: sticky; top: 0; z-index: 50; }
+        .nav-container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo { width: 44px; height: 44px; background: linear-gradient(135deg, var(--green), #38b000); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+        .brand-name { font-weight: 700; }
+        .brand-tagline { font-size: 13px; color: var(--muted); }
+        nav a { margin-left: 12px; color: var(--muted); text-decoration: none; font-weight: 500; }
+        nav a:hover { color: var(--green); }
+
+        /* Hero Section */
+        .hero { display: flex; gap: 32px; align-items: center; padding: 48px 0; }
+        .hero-left, .hero-right { flex: 1; }
+        h1 { margin: 0; font-size: 32px; line-height: 1.2; }
+        p.lead { color: var(--muted); margin-top: 8px; max-width: 500px; }
+        .cta { display: inline-block; margin-top: 16px; background: var(--green); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 500; transition: transform 0.2s; }
+        .cta:hover { transform: translateY(-2px); }
+        .tips-box { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(2,6,23,.06); }
+        .tips-box strong { font-size: 1.1em; }
+        .tips-box ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+
+        /* Grid & Card */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,.06); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(16,24,40,.1); }
+        .card-img { height: 160px; width: 100%; object-fit: cover; }
+        .card-body { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-weight: 700; }
+        .card-unit { font-size: 14px; color: var(--muted); }
+        .card-desc { font-size: 13px; color: var(--muted); margin: 10px 0; flex-grow: 1; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .price { font-weight: 700; font-size: 1.1em; }
+        .btn { background: var(--green); color: white; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; }
+
+        /* Cart */
+        .cart { position: fixed; right: 18px; bottom: 18px; background: linear-gradient(180deg, #fff, #f8fff8); padding: 16px; border-radius: 12px; box-shadow: 0 8px 20px rgba(2,6,23,.1); width: 340px; max-width: 90%; z-index: 100; }
+        .cart h3 { margin: 0 0 12px 0; }
+        .cart-list { max-height: 260px; overflow-y: auto; margin-bottom: 12px; }
+        .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); align-items: center; }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-title { font-weight: 700; }
+        .cart-item-price { font-size: 13px; color: var(--muted); }
+        .cart-item-actions { display: flex; align-items: center; gap: 8px; }
+        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
+        .remove-btn { border: none; background: transparent; cursor: pointer; padding: 0; }
+        .cart-total-line { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        #cartTotal { font-weight: 700; font-size: 1.2em; }
+
+        /* Checkout Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2,6,23,.35); align-items: center; justify-content: center; padding: 20px; z-index: 200; }
+        .modal-content { background: white; border-radius: 12px; padding: 24px; max-width: 480px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .modal-content h3 { margin: 0 0 16px 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        form input, form textarea, form select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 8px; font-family: inherit; }
+        .form-group { margin-bottom: 12px; }
+        .form-footer { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+        .btn-secondary { padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
+
+        footer { padding: 40px 0; color: var(--muted); text-align: center; }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .hero { flex-direction: column; }
+            .hero-right { order: -1; width: 100%; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo">SS</div>
-        <div>
-          <div style="font-weight:700">SayurSegar</div>
-          <div class="small muted">Sayur lokal, kirim cepat</div>
+    <template id="productCardTemplate">
+        <div class="card">
+            <img class="card-img" src="" alt="">
+            <div class="card-body">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <div class="card-title"></div>
+                    <div class="card-unit"></div>
+                </div>
+                <p class="card-desc"></p>
+                <div class="card-footer">
+                    <div class="price"></div>
+                    <button class="btn add-to-cart-btn">Tambah</button>
+                </div>
+            </div>
         </div>
-      </div>
-      <nav>
-        <a href="#produk">Produk</a>
-        <a href="#tentang">Tentang</a>
-        <a href="#kontak">Kontak</a>
-      </nav>
+    </template>
+    
+    <template id="cartItemTemplate">
+        <div class="cart-item">
+            <div class="cart-item-info">
+                <div class="cart-item-title"></div>
+                <div class="cart-item-price"></div>
+            </div>
+            <div class="cart-item-actions">
+                <button class="qty-btn" onclick="">-</button>
+                <span class="qty">1</span>
+                <button class="qty-btn" onclick="">+</button>
+                <button class="remove-btn" onclick="" title="Hapus item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#c33"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <header>
+        <div class="container nav-container">
+            <div class="brand">
+                <div class="logo">CF</div>
+                <div>
+                    <div class="brand-name">CIKFRESH</div>
+                    <div class="brand-tagline">Sayur lokal, kirim cepat</div>
+                </div>
+            </div>
+            <nav>
+                <a href="#produk">Produk</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#kontak">Kontak</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-left">
+                <h1>Pesan sayur lebih mudah bersama CIKFRESH</h1>
+                <p class="lead">Website sederhana untuk menampilkan produk, keranjang, dan form pemesanan. Bisa langsung dipakai sebagai tugas atau dikembangkan jadi toko online nyata.</p>
+                <a class="cta" href="#produk">Lihat Produk</a>
+            </div>
+            <div class="hero-right">
+                <div class="tips-box">
+                    <strong>Tips singkat memulai:</strong>
+                    <ul>
+                        <li>Gunakan foto produk yang rapi & natural</li>
+                        <li>Tulis berat, satuan, dan harga dengan jelas</li>
+                        <li>Tentukan area antar dan biaya kirim</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="produk" style="padding-top: 24px;">
+            <h2>Produk Kami</h2>
+            <div class="grid" id="productGrid"></div>
+        </section>
+
+        <section id="tentang" style="margin-top:28px">
+            <h2>Tentang CIKFRESH</h2>
+            <p class="muted">CIKFASH adalah contoh toko sayur lokal. Di sini Anda bisa menambahkan informasi usaha: alamat, jam buka, serta metode pembayaran & pengiriman yang tersedia.</p>
+        </section>
+
+        <section id="kontak" style="margin-top:20px">
+            <h2>Kontak & Order Manual</h2>
+            <p class="muted">Jika pelanggan ingin pesan lewat WhatsApp: sertakan nomor WA aktif dan contoh pesan (mis. "Pesan 2 ikat bayam, antar ke Jl. Merdeka 10").</p>
+        </section>
+    </main>
+
+    <div class="cart" id="cartBox">
+        <h3>Keranjang</h3>
+        <div class="cart-list" id="cartList">
+            <div class="muted" style="font-size: 14px;">Keranjang kosong</div>
+        </div>
+        <div class="cart-total-line">
+            <div>
+                <div style="font-size: 14px; color: var(--muted);">Total</div>
+                <div id="cartTotal">Rp 0</div>
+            </div>
+            <button class="btn" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
+        </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-left">
-        <h1>Pesan sayur lebih mudah bersama CIKFRESH</h1>
-        <p class="lead">Website sederhana untuk menampilkan produk, keranjang, dan form pemesanan. Bisa langsung dipakai sebagai tugas atau dikembangkan jadi toko online nyata.</p>
-        <a class="cta" href="#produk" onclick="document.querySelector('#produk').scrollIntoView({behavior:'smooth'})">Lihat Produk</a>
-      </div>
-      <div class="hero-right">
-        <div style="background:white;padding:16px;border-radius:12px;box-shadow:0 8px 24px rgba(2,6,23,.06)">
-          <strong>Tips singkat:</strong>
-          <ul style="margin:8px 0 0;padding-left:18px;color:var(--muted)">
-            <li>Foto produk rapi & natural</li>
-            <li>Tulis berat dan harga jelas</li>
-            <li>Tentukan area antar dan biaya kirim</li>
-          </ul>
+    <div id="checkoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Buat Pesanan</h3>
+            <form id="orderForm">
+                <div class="form-grid">
+                    <div class="form-group"><input name="name" placeholder="Nama" required /></div>
+                    <div class="form-group"><input name="phone" placeholder="No. HP (WA)" required /></div>
+                </div>
+                <div class="form-group"><textarea name="address" placeholder="Alamat lengkap (termasuk kec/kab)" rows="3" required></textarea></div>
+                <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+                    <label style="color: var(--muted);">Metode Bayar</label>
+                    <select name="payment">
+                        <option value="cod">Bayar di tempat (COD)</option>
+                        <option value="transfer">Transfer / e-wallet</option>
+                    </select>
+                </div>
+                <div class="form-footer">
+                    <button type="button" onclick="closeCheckout()" class="btn-secondary">Batal</button>
+                    <button class="btn" type="submit">Kirim Pesanan via WhatsApp</button>
+                </div>
+            </form>
         </div>
-      </div>
-    </section>
-
-    <section id="produk">
-      <h2>Produk Kami</h2>
-      <div class="grid" id="productGrid">
-        </div>
-    </section>
-
-    <section id="tentang" style="margin-top:28px">
-      <h2>Tentang SayurSegar</h2>
-      <p class="muted">Sayur Segar adalah contoh toko sayur lokal untuk tugas sekolah/kuliah. Disarankan untuk menambahkan informasi usaha Anda: alamat, jam usaha, serta metode pembayaran & pengiriman yang tersedia.</p>
-    </section>
-
-    <section id="kontak" style="margin-top:20px">
-      <h2>Kontak & Order Manual</h2>
-      <p class="muted">Jika pelanggan ingin pesan lewat WhatsApp: sertakan nomor WA aktif dan contoh pesan pemesanan (mis. "Pesan 2 ikat bayam, antar ke Jl. Merdeka 10").</p>
-    </section>
-  </main>
-
-  <div class="cart" id="cartBox">
-    <h3>Keranjang</h3>
-    <div class="cart-list" id="cartList">
-      <div class="muted small">Keranjang kosong</div>
     </div>
-    <div class="cart-footer">
-      <div>
-        <div class="small muted">Total</div>
-        <div id="cartTotal" style="font-weight:700">Rp 0</div>
-      </div>
-      <div>
-        <button class="btn" id="checkoutBtn" onclick="openCheckout()" disabled>Checkout</button>
-      </div>
-    </div>
-  </div>
 
-  <div id="checkoutModal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,.35);align-items:center;justify-content:center;padding:20px">
-    <div style="background:white;border-radius:12px;padding:18px;max-width:720px;width:100%">
-      <h3>Buat Pesanan</h3>
-      <form id="orderForm">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <input name="name" placeholder="Nama" required />
-          <input name="phone" placeholder="No. HP (WA)" required />
-        </div>
-        <textarea name="address" placeholder="Alamat lengkap (termasuk kec/kab)" style="margin-top:8px" required></textarea>
-        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-          <label class="small muted">Metode Bayar</label>
-          <select name="payment">
-            <option value="cod">Bayar di tempat (COD)</option>
-            <option value="transfer">Transfer / e-wallet</option>
-          </select>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-          <button type="button" onclick="closeCheckout()" style="padding:8px 12px;border-radius:8px;border:1px solid #eee">Batal</button>
-          <button class="btn" type="submit">Kirim Pesanan</button>
-        </div>
-      </form>
-    </div>
-  </div>
+    <footer class="container">
+        © CIKFRESH — Prototype Tugas
+    </footer>
 
-  <footer class="container">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div class="muted">© SayurSegar — Prototype</div>
-      <div style="text-align:right" class="muted small">Buat untuk tugas — kembangkan dengan sistem pembayaran & pengiriman nyata jika diperlukan</div>
-    </div>
-  </footer>
+    <script>
+        // --- GANTI NOMOR WHATSAPP DI SINI ---
+        const WHATSAPP_NUMBER = '62895365249519'; // Ganti dengan nomor WA tujuan (diawali 62)
 
-  <script>
-    // --- DAFTAR PRODUK (KOL DAN BAYAM SUDAH DIHAPUS) ---
-    const products = [
-      {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/terong-ungu.jpg'},
-      {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/jeruk-nipis.jpg'},
-      {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/pare.jpg'},
-      {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/terong-lalap.jpg'},
-      {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/tomat.jpg'},
-      {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/wortel.jpg'},
-      {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/timun.jpg'},
-      {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/daun-bawang.jpg'},
-      {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/brokoli.jpg'},
-      {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/labu-siam.jpg'}
-    ];
+        // --- DAFTAR PRODUK ---
+        const products = [
+             {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/terong-ungu.jpg'},
+             {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/jeruk-nipis.jpg'},
+             {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/pare.jpg'},
+             {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/terong-lalap.jpg'},
+             {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/tomat.jpg'},
+             {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/wortel.jpg'},
+             {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/timun.jpg'},
+             {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/daun-bawang.jpg'},
+             {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/brokoli.jpg'},
+             {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/labu-siam.jpg'}
+        ];
 
-    // Kode di bawah ini akan otomatis menampilkan produk di atas
-    const grid = document.getElementById('productGrid');
-    products.forEach(p=>{
-      const card = document.createElement('div');card.className='card';
-      card.innerHTML = `
-        <img src="${p.image}" alt="${p.name}" class="img">
-        <div style="margin-top:8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:700">${p.name}</div><div class="muted">${p.unit}</div></div>
-          <div class="meta"><div class="muted small">${p.desc}</div><div class="price">Rp ${numberWithCommas(p.price)}</div></div>
-          <div style="margin-top:10px;display:flex;justify-content:flex-end"><button class="btn" onclick='addToCart(${p.id})'>Tambah</button></div>
-        </div>`;
-      grid.appendChild(card);
-    });
+        // --- LOGIKA APLIKASI ---
+        const productGrid = document.getElementById('productGrid');
+        const productCardTemplate = document.getElementById('productCardTemplate');
+        const cartList = document.getElementById('cartList');
+        const cartItemTemplate = document.getElementById('cartItemTemplate');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutModal = document.getElementById('checkoutModal');
+        let cart = []; // Format: { id, qty }
 
-    // --- SISA KODE (TIDAK PERLU DIUBAH) ---
-    let cart = []; // {id, qty}
-    const cartList = document.getElementById('cartList');
-    const cartTotal = document.getElementById('cartTotal');
-    const checkoutBtn = document.getElementById('checkoutBtn');
+        function renderProducts() {
+            products.forEach(p => {
+                const card = document.importNode(productCardTemplate.content, true);
+                card.querySelector('.card-img').src = p.image;
+                card.querySelector('.card-img').alt = p.name;
+                card.querySelector('.card-title').textContent = p.name;
+                card.querySelector('.card-unit').textContent = p.unit;
+                card.querySelector('.card-desc').textContent = p.desc;
+                card.querySelector('.price').textContent = `Rp ${numberWithCommas(p.price)}`;
+                card.querySelector('.add-to-cart-btn').onclick = () => addToCart(p.id);
+                productGrid.appendChild(card);
+            });
+        }
 
-    function addToCart(id){
-      const found = cart.find(ci=>ci.id===id);
-      if(found) found.qty++;
-      else cart.push({id,qty:1});
-      renderCart();
-    }
+        function renderCart() {
+            cartList.innerHTML = '';
+            if (cart.length === 0) {
+                cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
+                updateCartTotal();
+                return;
+            }
 
-    function removeFromCart(id){
-      cart = cart.filter(c=>c.id!==id);
-      renderCart();
-    }
+            cart.forEach(ci => {
+                const p = products.find(prod => prod.id === ci.id);
+                const item = document.importNode(cartItemTemplate.content, true);
+                item.querySelector('.cart-item-title').textContent = p.name;
+                item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
+                item.querySelector('.qty').textContent = ci.qty;
+                const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
+                actions[0].onclick = () => changeQty(p.id, -1);
+                actions[1].onclick = () => changeQty(p.id, 1);
+                actions[2].onclick = () => removeFromCart(p.id);
+                cartList.appendChild(item);
+            });
+            updateCartTotal();
+        }
 
-    function changeQty(id,delta){
-      const item = cart.find(c=>c.id===id);
-      if(!item) return;
-      item.qty += delta;
-      if(item.qty<1) removeFromCart(id);
-      renderCart();
-    }
+        function addToCart(id) {
+            const found = cart.find(ci => ci.id === id);
+            if (found) {
+                found.qty++;
+            } else {
+                cart.push({ id, qty: 1 });
+            }
+            renderCart();
+        }
 
-    function renderCart(){
-      cartList.innerHTML='';
-      if(cart.length===0){cartList.innerHTML='<div class="muted small">Keranjang kosong</div>';cartTotal.textContent='Rp 0';checkoutBtn.disabled=true;return}
-      let total=0;
-      cart.forEach(ci=>{
-        const p = products.find(x=>x.id===ci.id);
-        const line = document.createElement('div');line.className='cart-item';
-        const subtotal = p.price * ci.qty; total += subtotal;
-        line.innerHTML = `<div style="flex:1"><div style="font-weight:700">${p.name}</div><div class="small muted">${p.unit} • Rp ${numberWithCommas(p.price)}</div></div><div style="text-align:right"><div>Rp ${numberWithCommas(subtotal)}</div><div style="margin-top:6px"><button onclick='changeQty(${p.id},1)' style="margin-right:6px">+</button><button onclick='changeQty(${p.id},-1)'>-</button><div style="margin-top:6px"><button onclick='removeFromCart(${p.id})' style="border:none;background:transparent;color:#c33;cursor:pointer">Hapus</button></div></div>`;
-        cartList.appendChild(line);
-      });
-      cartTotal.textContent='Rp '+numberWithCommas(total);
-      checkoutBtn.disabled=false;
-    }
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            renderCart();
+        }
 
-    function numberWithCommas(x){return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+        function changeQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty < 1) {
+                removeFromCart(id);
+            }
+            renderCart();
+        }
 
-    // CHECKOUT
-    const checkoutModal = document.getElementById('checkoutModal');
-    function openCheckout(){checkoutModal.style.display='flex';}
-    function closeCheckout(){checkoutModal.style.display='none';}
+        function updateCartTotal() {
+            const total = cart.reduce((sum, ci) => {
+                const product = products.find(p => p.id === ci.id);
+                return sum + (product.price * ci.qty);
+            }, 0);
+            cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
+            checkoutBtn.disabled = cart.length === 0;
+        }
 
-    document.getElementById('orderForm').addEventListener('submit',function(e){
-      e.preventDefault();
-      const form = new FormData(e.target);
-      const order = {
-        customer: form.get('name'),
-        phone: form.get('phone'),
-        address: form.get('address'),
-        payment: form.get('payment'),
-        items: cart.map(ci=>({product:products.find(p=>p.id===ci.id).name,qty:ci.qty,unit:products.find(p=>p.id===ci.id).unit,price:products.find(p=>p.id===ci.id).price})),
-        total: cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0),
-        created: new Date().toLocaleString()
-      };
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
-      const subject = encodeURIComponent('Pesanan Sayur - ' + order.customer);
-      let body = `Halo, saya ingin memesan:%0D%0A`;
-      order.items.forEach(it=>{body += `- ${it.qty} x ${it.product} (${it.unit}) : Rp ${numberWithCommas(it.price * it.qty)}%0D%0A`});
-      body += `%0D%0ATotal: Rp ${numberWithCommas(order.total)}%0D%0A`;
-      body += `Nama: ${order.customer}%0D%0ANo HP: ${order.phone}%0D%0AAlamat: ${order.address}%0D%0AMetode bayar: ${order.payment}%0D%0A`; 
+        // Checkout Logic
+        function openCheckout() { checkoutModal.style.display = 'flex'; }
+        function closeCheckout() { checkoutModal.style.display = 'none'; }
 
-      window.location.href = `mailto:youremail@domain.com?subject=${subject}&body=${encodeURIComponent(decodeURIComponent(body))}`;
+        document.getElementById('orderForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+            
+            let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
+            cart.forEach(ci => {
+                const p = products.find(prod => prod.id === ci.id);
+                message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
+            });
+            message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
+            message += `*Data Penerima:*\n`;
+            message += `Nama: ${form.get('name')}\n`;
+            message += `No. HP: ${form.get('phone')}\n`;
+            message += `Alamat: ${form.get('address')}\n`;
+            message += `Pembayaran: ${form.get('payment')}\n\n`;
+            message += `Terima kasih!`;
 
-      alert('Pesanan disiapkan untuk dikirim lewat email. (Ini prototype — ganti mailto dengan backend nyata untuk produksi)');
-      cart = [];
-      renderCart();
-      closeCheckout();
-    });
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+            
+            alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+            cart = [];
+            renderCart();
+            closeCheckout();
+        });
 
-    renderCart();
-  </script>
+        // Initial Render
+        renderProducts();
+        renderCart();
+    </script>
 </body>
 </html>
