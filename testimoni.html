@@ -171,97 +171,148 @@
     </footer>
 
     <script>
-        // --- GANTI NOMOR WHATSAPP DI SINI ---
-        const WHATSAPP_NUMBER = '62895365249519'; // Ganti dengan nomor WA tujuan (diawali 62)
-        // --- DAFTAR PRODUK (Dibutuhkan untuk logika keranjang) ---
-        const products = [
-             {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
-             {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
-             {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
-             {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
-             {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
-             {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
-             {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
-             {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
-             {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
-             {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
-        ];
-        // --- LOGIKA APLIKASI ---
-        const productGrid = document.getElementById('productGrid');
-        const productCardTemplate = document.getElementById('productCardTemplate');
-        const cartList = document.getElementById('cartList');
-        const cartItemTemplate = document.getElementById('cartItemTemplate');
-        const cartTotalEl = document.getElementById('cartTotal');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        const checkoutModal = document.getElementById('checkoutModal');
-        let cart = []; // Format: { id, qty }
+    // --- GANTI NOMOR WHATSAPP DI SINI ---
+    const WHATSAPP_NUMBER = '62895365249519'; // Ganti dengan nomor WA tujuan (diawali 62)
 
-        function renderProducts() {
-            // === PENGECEKAN PENTING! ===
-            if (!productGrid || !productCardTemplate) return; 
-            // (Tidak akan jalan di halaman ini, dan itu tidak apa-apa)
+    // --- DAFTAR PRODUK ---
+    const products = [
+         {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
+         {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
+         {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
+         {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
+         {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
+         {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
+         {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
+         {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
+         {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
+         {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
+    ];
+
+    // --- LOGIKA APLIKASI ---
+    const productGrid = document.getElementById('productGrid');
+    const productCardTemplate = document.getElementById('productCardTemplate');
+    const cartList = document.getElementById('cartList');
+    const cartItemTemplate = document.getElementById('cartItemTemplate');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const checkoutModal = document.getElementById('checkoutModal');
+    
+    // ============= PERUBAHAN 1: AMBIL KERANJANG DARI LOCALSTORAGE =============
+    let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
+
+    // ============= PERUBAHAN 2: FUNGSI BARU UNTUK MENYIMPAN KERANJANG =============
+    function saveCart() {
+        localStorage.setItem('cikfreshCart', JSON.stringify(cart));
+    }
+
+    function renderProducts() {
+        // Pengecekan ini penting agar tidak error di halaman lain
+        if (!productGrid || !productCardTemplate) return; 
+
+        products.forEach(p => {
+            const card = document.importNode(productCardTemplate.content, true);
+            card.querySelector('.card-img').src = p.image;
+            card.querySelector('.card-img').alt = p.name;
+            card.querySelector('.card-title').textContent = p.name;
+            card.querySelector('.card-unit').textContent = p.unit;
+            card.querySelector('.card-desc').textContent = p.desc;
+            card.querySelector('.price').textContent = `Rp ${numberWithCommas(p.price)}`;
+            card.querySelector('.add-to-cart-btn').onclick = () => addToCart(p.id);
+            productGrid.appendChild(card);
+        });
+    }
+
+    function renderCart() {
+        // Pengecekan ini penting agar tidak error di halaman non-produk
+        if (!cartList || !cartItemTemplate) return;
+
+        cartList.innerHTML = '';
+        if (cart.length === 0) {
+            cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
+            
+            // ============= PERUBAHAN 3: SIMPAN SAAT KERANJANG KOSONG =============
+            saveCart();
+            updateCartTotal();
+            return;
         }
-        function renderCart() {
-            cartList.innerHTML = '';
-            if (cart.length === 0) {
-                cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
-                updateCartTotal();
+
+        cart.forEach(ci => {
+            const p = products.find(prod => prod.id === ci.id);
+            // Jaga-jaga jika produk tidak ditemukan
+            if (!p) {
+                cart = cart.filter(item => item.id !== ci.id); // Hapus item aneh dari keranjang
                 return;
             }
-            cart.forEach(ci => {
-                const p = products.find(prod => prod.id === ci.id);
-                const item = document.importNode(cartItemTemplate.content, true);
-                item.querySelector('.cart-item-title').textContent = p.name;
-                item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
-                item.querySelector('.qty').textContent = ci.qty;
-                const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
-                actions[0].onclick = () => changeQty(p.id, -1);
-                actions[1].onclick = () => changeQty(p.id, 1);
-                actions[2].onclick = () => removeFromCart(p.id);
-                cartList.appendChild(item);
-            });
-            updateCartTotal();
+            const item = document.importNode(cartItemTemplate.content, true);
+            item.querySelector('.cart-item-title').textContent = p.name;
+            item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
+            item.querySelector('.qty').textContent = ci.qty;
+            const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
+            actions[0].onclick = () => changeQty(p.id, -1);
+            actions[1].onclick = () => changeQty(p.id, 1);
+            actions[2].onclick = () => removeFromCart(p.id);
+            cartList.appendChild(item);
+        });
+
+        // ============= PERUBAHAN 4: SIMPAN SETIAP KALI RENDER KERANJANG =============
+        saveCart();
+        updateCartTotal();
+    }
+
+    function addToCart(id) {
+        const found = cart.find(ci => ci.id === id);
+        if (found) {
+            found.qty++;
+        } else {
+            cart.push({ id, qty: 1 });
         }
-        function addToCart(id) {
-            const found = cart.find(ci => ci.id === id);
-            if (found) {
-                found.qty++;
-            } else {
-                cart.push({ id, qty: 1 });
-            }
-            renderCart();
+        renderCart(); // renderCart() akan otomatis menyimpan
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(c => c.id !== id);
+        renderCart(); // renderCart() akan otomatis menyimpan
+    }
+
+    function changeQty(id, delta) {
+        const item = cart.find(c => c.id === id);
+        if (!item) return;
+        item.qty += delta;
+        if (item.qty < 1) {
+            removeFromCart(id); // removeFromCart() akan memanggil renderCart()
+        } else {
+            renderCart(); // renderCart() akan otomatis menyimpan
         }
-        function removeFromCart(id) {
-            cart = cart.filter(c => c.id !== id);
-            renderCart();
-        }
-        function changeQty(id, delta) {
-            const item = cart.find(c => c.id === id);
-            if (!item) return;
-            item.qty += delta;
-            if (item.qty < 1) {
-                removeFromCart(id);
-            }
-            renderCart();
-        }
-        function updateCartTotal() {
-            const total = cart.reduce((sum, ci) => {
-                const product = products.find(p => p.id === ci.id);
-                return sum + (product.price * ci.qty);
-            }, 0);
-            cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
-            checkoutBtn.disabled = cart.length === 0;
-        }
-        function numberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        // Checkout Logic
-        function openCheckout() { checkoutModal.style.display = 'flex'; }
-        function closeCheckout() { checkoutModal.style.display = 'none'; }
-        document.getElementById('orderForm').addEventListener('submit', function (e) {
+    }
+
+    function updateCartTotal() {
+        if (!cartTotalEl) return; // Jaga-jaga
+        
+        const total = cart.reduce((sum, ci) => {
+            const product = products.find(p => p.id === ci.id);
+            if (!product) return sum; // Jaga-jaga jika produk tidak ada
+            return sum + (product.price * ci.qty);
+        }, 0);
+        cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
+        if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
+    }
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // Checkout Logic
+    function openCheckout() { if (checkoutModal) checkoutModal.style.display = 'flex'; }
+    function closeCheckout() { if (checkoutModal) checkoutModal.style.display = 'none'; }
+
+    // Pastikan form order hanya berjalan jika ada
+    const orderForm = document.getElementById('orderForm');
+    if (orderForm) {
+        orderForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const form = new FormData(e.target);
             const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+            
             let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
             cart.forEach(ci => {
                 const p = products.find(prod => prod.id === ci.id);
@@ -274,16 +325,23 @@
             message += `Alamat: ${form.get('address')}\n`;
             message += `Pembayaran: ${form.get('payment')}\n\n`;
             message += `Terima kasih!`;
+
             const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
             window.open(whatsappURL, '_blank');
+            
             alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+            
+            // ============= PERUBAHAN 5: SIMPAN KERANJANG KOSONG SETELAH CHECKOUT =============
             cart = [];
+            saveCart();
             renderCart();
             closeCheckout();
         });
-        // Initial Render
-        renderProducts();
-        renderCart();
-    </script>
+    }
+
+    // Initial Render
+    renderProducts();
+    renderCart();
+</script>
 </body>
 </html>
