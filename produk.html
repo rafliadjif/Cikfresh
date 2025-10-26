@@ -9,6 +9,73 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+    
+    /* =============== STYLE MODAL PEMBAYARAN =============== */
+    /* Latar belakang gelap */
+    .modal-container {
+        position: fixed; /* Tetap di layar walaupun di-scroll */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Transparan gelap */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000; /* Muncul di atas segalanya */
+
+        /* INI YANG BIKIN SEMBUNYI */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Biar muncul pas ditambah class 'show' */
+    .modal-container.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Kotak putih di tengah */
+    .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px; /* Maksimal lebar 400px */
+        text-align: center;
+        position: relative; /* Biar tombol close bisa nempel */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Tombol close (X) */
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+    }
+    .modal-close:hover {
+        color: #000;
+    }
+
+    /* Gambar QRIS-nya */
+    .qris-image {
+        width: 200px; /* Ukuran gambar QR */
+        height: 200px;
+        margin: 15px 0;
+        border: 1px solid #ddd;
+    }
+
+    /* Tombol "Saya Sudah Bayar" */
+    #confirm-payment-btn {
+        margin-top: 15px;
+        width: 100%;
+        /* Pakai class 'btn' yang udah ada di web lo */
+    }
         :root {
             --green: #2e8b57;
             --accent: #f2a541;
@@ -140,6 +207,25 @@
     </style>
 </head>
 <body>
+     <div class="modal-container" id="payment-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close-btn">&times;</span>
+            <h2>Selesaikan Pembayaran</h2>
+            <p>Silakan scan QRIS di bawah ini:</p>
+            
+            <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/375px-QR_code_for_mobile_English_Wikipedia.svg.png" 
+            alt="Contoh QRIS" 
+            class="qris-image"
+            >
+            
+            <h3>Total Bayar: <span id="modal-total-price">Rp 0</span></h3>
+            
+            <p>Klik "Saya Sudah Bayar" jika sudah selesai.</p>
+            
+            <button class="btn" id="confirm-payment-btn">Saya Sudah Bayar</button>
+        </div>
+    </div>
     <template id="productCardTemplate">
         <div class="card">
             <img class="card-img" src="" alt="">
@@ -283,39 +369,49 @@
 
     // --- DAFTAR PRODUK ---
     const products = [
-         {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
-         {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
-         {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
-         {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
-         {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
-         {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
-         {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
-         {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
-         {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
-         {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
+        {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
+        {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
+        {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
+        {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
+        {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
+        {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
+        {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
+        {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
+        {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
+        {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
     ];
 
-    // --- LOGIKA APLIKASI ---
+    // --- AMBIL SEMUA ELEMEN SEKALI DI AWAL ---
     const productGrid = document.getElementById('productGrid');
     const productCardTemplate = document.getElementById('productCardTemplate');
     const cartList = document.getElementById('cartList');
     const cartItemTemplate = document.getElementById('cartItemTemplate');
     const cartTotalEl = document.getElementById('cartTotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
-    const checkoutModal = document.getElementById('checkoutModal');
     
-    // ============= PERUBAHAN 1: AMBIL KERANJANG DARI LOCALSTORAGE =============
+    // Elemen Modal Checkout
+    const checkoutModal = document.getElementById('checkoutModal');
+    const orderForm = document.getElementById('orderForm');
+
+    // Elemen Modal QRIS
+    const paymentModal = document.getElementById('payment-modal');
+    const closeModalBtn = document.getElementById('modal-close-btn');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    const modalTotalPrice = document.getElementById('modal-total-price');
+
+    // Keranjang
     let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
 
-    // ============= PERUBAHAN 2: FUNGSI BARU UNTUK MENYIMPAN KERANJANG =============
+    // --- FUNGSI-FUNGSI LOGIKA ---
+
     function saveCart() {
         localStorage.setItem('cikfreshCart', JSON.stringify(cart));
     }
 
     function renderProducts() {
-        // Pengecekan ini penting agar tidak error di halaman lain
         if (!productGrid || !productCardTemplate) return; 
-
+        
+        productGrid.innerHTML = ''; // Kosongin dulu
         products.forEach(p => {
             const card = document.importNode(productCardTemplate.content, true);
             card.querySelector('.card-img').src = p.image;
@@ -330,38 +426,27 @@
     }
 
     function renderCart() {
-        // Pengecekan ini penting agar tidak error di halaman non-produk
         if (!cartList || !cartItemTemplate) return;
 
         cartList.innerHTML = '';
         if (cart.length === 0) {
             cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
-            
-            // ============= PERUBAHAN 3: SIMPAN SAAT KERANJANG KOSONG =============
-            saveCart();
-            updateCartTotal();
-            return;
+        } else {
+            cart.forEach(ci => {
+                const p = products.find(prod => prod.id === ci.id);
+                if (!p) return;
+                const item = document.importNode(cartItemTemplate.content, true);
+                item.querySelector('.cart-item-title').textContent = p.name;
+                item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
+                item.querySelector('.qty').textContent = ci.qty;
+                const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
+                actions[0].onclick = () => changeQty(p.id, -1);
+                actions[1].onclick = () => changeQty(p.id, 1);
+                actions[2].onclick = () => removeFromCart(p.id);
+                cartList.appendChild(item);
+            });
         }
-
-        cart.forEach(ci => {
-            const p = products.find(prod => prod.id === ci.id);
-            // Jaga-jaga jika produk tidak ditemukan
-            if (!p) {
-                cart = cart.filter(item => item.id !== ci.id); // Hapus item aneh dari keranjang
-                return;
-            }
-            const item = document.importNode(cartItemTemplate.content, true);
-            item.querySelector('.cart-item-title').textContent = p.name;
-            item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
-            item.querySelector('.qty').textContent = ci.qty;
-            const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
-            actions[0].onclick = () => changeQty(p.id, -1);
-            actions[1].onclick = () => changeQty(p.id, 1);
-            actions[2].onclick = () => removeFromCart(p.id);
-            cartList.appendChild(item);
-        });
-
-        // ============= PERUBAHAN 4: SIMPAN SETIAP KALI RENDER KERANJANG =============
+        
         saveCart();
         updateCartTotal();
     }
@@ -373,12 +458,12 @@
         } else {
             cart.push({ id, qty: 1 });
         }
-        renderCart(); // renderCart() akan otomatis menyimpan
+        renderCart();
     }
 
     function removeFromCart(id) {
         cart = cart.filter(c => c.id !== id);
-        renderCart(); // renderCart() akan otomatis menyimpan
+        renderCart();
     }
 
     function changeQty(id, delta) {
@@ -386,18 +471,18 @@
         if (!item) return;
         item.qty += delta;
         if (item.qty < 1) {
-            removeFromCart(id); // removeFromCart() akan memanggil renderCart()
+            removeFromCart(id);
         } else {
-            renderCart(); // renderCart() akan otomatis menyimpan
+            renderCart();
         }
     }
 
     function updateCartTotal() {
-        if (!cartTotalEl) return; // Jaga-jaga
+        if (!cartTotalEl) return;
         
         const total = cart.reduce((sum, ci) => {
             const product = products.find(p => p.id === ci.id);
-            if (!product) return sum; // Jaga-jaga jika produk tidak ada
+            if (!product) return sum;
             return sum + (product.price * ci.qty);
         }, 0);
         cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
@@ -408,45 +493,81 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    // Checkout Logic
-    function openCheckout() { if (checkoutModal) checkoutModal.style.display = 'flex'; }
-    function closeCheckout() { if (checkoutModal) checkoutModal.style.display = 'none'; }
+    // --- LOGIKA MODAL & FORM (YANG UDAH BENER) ---
 
-    // Pastikan form order hanya berjalan jika ada
-    const orderForm = document.getElementById('orderForm');
+    function openCheckout() { 
+        if (checkoutModal) checkoutModal.style.display = 'flex'; 
+    }
+    function closeCheckout() { 
+        if (checkoutModal) checkoutModal.style.display = 'none'; 
+    }
+
     if (orderForm) {
         orderForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            e.preventDefault(); 
             const form = new FormData(e.target);
-            const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
-            
-            let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
-            cart.forEach(ci => {
-                const p = products.find(prod => prod.id === ci.id);
-                message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
-            });
-            message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
-            message += `*Data Penerima:*\n`;
-            message += `Nama: ${form.get('name')}\n`;
-            message += `No. HP: ${form.get('phone')}\n`;
-            message += `Alamat: ${form.get('address')}\n`;
-            message += `Pembayaran: ${form.get('payment')}\n\n`;
-            message += `Terima kasih!`;
+            const paymentMethod = form.get('payment'); 
 
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
-            
-            alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
-            
-            // ============= PERUBAHAN 5: SIMPAN KERANJANG KOSONG SETELAH CHECKOUT =============
-            cart = [];
-            saveCart();
-            renderCart();
-            closeCheckout();
+            if (paymentMethod === 'transfer') {
+                const currentTotal = cartTotalEl ? cartTotalEl.innerText : 'Rp 0';
+                modalTotalPrice.innerText = currentTotal;
+                paymentModal.classList.add('show');
+                closeCheckout(); 
+            } 
+            else { // Asumsi 'cod'
+                const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+                let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
+                cart.forEach(ci => {
+                    const p = products.find(prod => prod.id === ci.id);
+                    message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
+                });
+                message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
+                message += `*Data Penerima:*\n`;
+                message += `Nama: ${form.get('name')}\n`;
+                message += `No. HP: ${form.get('phone')}\n`;
+                message += `Alamat: ${form.get('address')}\n`;
+                message += `Pembayaran: ${form.get('payment')}\n\n`; 
+                message += `Terima kasih!`;
+
+                const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+                alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+                
+                cart = [];
+                renderCart(); // Ini udah otomatis manggil saveCart()
+                closeCheckout();
+                orderForm.reset();
+            }
         });
     }
 
-    // Initial Render
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+        });
+    }
+
+    if (paymentModal) {
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) {
+                paymentModal.classList.remove('show');
+            }
+        });
+    }
+
+    if (confirmPaymentBtn) {
+        confirmPaymentBtn.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+            alert('Pembayaran Berhasil! Pesanan Anda sedang diproses.');
+            cart = [];
+            renderCart(); // Ini udah otomatis manggil saveCart()
+            if (orderForm) {
+                orderForm.reset();
+            }
+        });
+    }
+
+    // --- INITIAL RENDER (JALANKAN PAS HALAMAN DIBUKA) ---
     renderProducts();
     renderCart();
 </script>
