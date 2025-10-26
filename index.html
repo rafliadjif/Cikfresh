@@ -386,23 +386,14 @@
 
     <script>
     // --- GANTI NOMOR WHATSAPP DI SINI ---
-    const WHATSAPP_NUMBER = '62895365249519'; // Ganti dengan nomor WA tujuan (diawali 62)
+    const WHATSAPP_NUMBER = '62895365249519'; 
+    const API_BASE_URL = 'http://localhost:3000/api'; // Alamat API Backend
 
-    // --- DAFTAR PRODUK ---
-    const products = [
-         {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
-         {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
-         {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
-         {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
-         {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
-         {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
-         {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
-         {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
-         {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
-         {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
-    ];
-
-    // --- LOGIKA APLIKASI ---
+    // ============= LOGIKA KERANJANG DAN DATABASE =============
+    let products = []; // Produk sekarang akan disimpan di sini setelah diambil dari API
+    let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
+    
+    // Element selectors (Sama seperti sebelumnya)
     const productGrid = document.getElementById('productGrid');
     const productCardTemplate = document.getElementById('productCardTemplate');
     const cartList = document.getElementById('cartList');
@@ -411,52 +402,69 @@
     const checkoutBtn = document.getElementById('checkoutBtn');
     const checkoutModal = document.getElementById('checkoutModal');
     
-    // ============= PERUBAHAN 1: AMBIL KERANJANG DARI LOCALSTORAGE =============
-    let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
-
-    // ============= PERUBAHAN 2: FUNGSI BARU UNTUK MENYIMPAN KERANJANG =============
     function saveCart() {
         localStorage.setItem('cikfreshCart', JSON.stringify(cart));
     }
 
+    // FUNGSI BARU: Ambil data produk dari backend
+    async function fetchProducts() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/products`);
+            if (!response.ok) {
+                throw new Error('Gagal mengambil data produk dari API');
+            }
+            products = await response.json();
+            
+            // Setelah data diambil, baru render produk dan keranjang
+            renderProducts();
+            renderCart();
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            // Tampilkan pesan error di halaman produk jika gagal
+            if (productGrid) {
+                 productGrid.innerHTML = '<p style="color:red; text-align:center;">Gagal memuat produk. Pastikan server backend (node server.js) sedang berjalan.</p>';
+            }
+        }
+    }
+
     function renderProducts() {
-        // Pengecekan ini penting agar tidak error di halaman lain
+        // HANYA jalan di halaman yang punya grid produk
         if (!productGrid || !productCardTemplate) return; 
+
+        // Kosongkan grid (jika ada pesan loading)
+        productGrid.innerHTML = ''; 
 
         products.forEach(p => {
             const card = document.importNode(productCardTemplate.content, true);
-            card.querySelector('.card-img').src = p.image;
+            // Menggunakan image_url dari database
+            card.querySelector('.card-img').src = p.image_url; 
             card.querySelector('.card-img').alt = p.name;
             card.querySelector('.card-title').textContent = p.name;
             card.querySelector('.card-unit').textContent = p.unit;
-            card.querySelector('.card-desc').textContent = p.desc;
+            card.querySelector('.card-desc').textContent = p.description;
             card.querySelector('.price').textContent = `Rp ${numberWithCommas(p.price)}`;
-            card.querySelector('.add-to-cart-btn').onclick = () => addToCart(p.id);
+            // ID produk harus sama dengan ID dari database
+            card.querySelector('.add-to-cart-btn').onclick = () => addToCart(p.id); 
             productGrid.appendChild(card);
         });
     }
 
     function renderCart() {
-        // Pengecekan ini penting agar tidak error di halaman non-produk
         if (!cartList || !cartItemTemplate) return;
 
         cartList.innerHTML = '';
         if (cart.length === 0) {
             cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
-            
-            // ============= PERUBAHAN 3: SIMPAN SAAT KERANJANG KOSONG =============
             saveCart();
             updateCartTotal();
             return;
         }
 
         cart.forEach(ci => {
-            const p = products.find(prod => prod.id === ci.id);
-            // Jaga-jaga jika produk tidak ditemukan
-            if (!p) {
-                cart = cart.filter(item => item.id !== ci.id); // Hapus item aneh dari keranjang
-                return;
-            }
+            // Cari produk berdasarkan ID dari array 'products' yang sudah diisi dari database
+            const p = products.find(prod => prod.id === ci.id); 
+            if (!p) return; // Skip jika produk tidak ditemukan (misal sudah dihapus dari DB)
+
             const item = document.importNode(cartItemTemplate.content, true);
             item.querySelector('.cart-item-title').textContent = p.name;
             item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
@@ -467,44 +475,45 @@
             actions[2].onclick = () => removeFromCart(p.id);
             cartList.appendChild(item);
         });
-
-        // ============= PERUBAHAN 4: SIMPAN SETIAP KALI RENDER KERANJANG =============
         saveCart();
         updateCartTotal();
     }
 
     function addToCart(id) {
+        // ... (Fungsi keranjang sama)
         const found = cart.find(ci => ci.id === id);
         if (found) {
             found.qty++;
         } else {
             cart.push({ id, qty: 1 });
         }
-        renderCart(); // renderCart() akan otomatis menyimpan
+        renderCart(); 
     }
 
     function removeFromCart(id) {
+        // ... (Fungsi keranjang sama)
         cart = cart.filter(c => c.id !== id);
-        renderCart(); // renderCart() akan otomatis menyimpan
+        renderCart(); 
     }
 
     function changeQty(id, delta) {
+        // ... (Fungsi keranjang sama)
         const item = cart.find(c => c.id === id);
         if (!item) return;
         item.qty += delta;
         if (item.qty < 1) {
-            removeFromCart(id); // removeFromCart() akan memanggil renderCart()
+            removeFromCart(id);
         } else {
-            renderCart(); // renderCart() akan otomatis menyimpan
+            renderCart();
         }
     }
 
     function updateCartTotal() {
-        if (!cartTotalEl) return; // Jaga-jaga
+        if (!cartTotalEl) return;
         
         const total = cart.reduce((sum, ci) => {
             const product = products.find(p => p.id === ci.id);
-            if (!product) return sum; // Jaga-jaga jika produk tidak ada
+            if (!product) return sum;
             return sum + (product.price * ci.qty);
         }, 0);
         cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
@@ -515,16 +524,7 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    // --- Ambil Elemen Modal & Form di Awal ---
-    // (PENTING: Kita definisikan di luar biar bisa diakses semua fungsi)
-    const checkoutModal = document.getElementById('checkoutModal');
-    const orderForm = document.getElementById('orderForm');
-    const paymentModal = document.getElementById('payment-modal');
-    const closeModalBtn = document.getElementById('modal-close-btn');
-    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
-    const modalTotalPrice = document.getElementById('modal-total-price');
-
-    // --- Checkout Logic ---
+    // ============= FUNGSI BARU: SIMPAN KE DATABASE & WA =============
     function openCheckout() { 
         if (checkoutModal) checkoutModal.style.display = 'flex'; 
     }
@@ -532,109 +532,82 @@
         if (checkoutModal) checkoutModal.style.display = 'none'; 
     }
 
-    // --- Logika untuk Form Pemesanan (GABUNGAN) ---
+    const orderForm = document.getElementById('orderForm');
     if (orderForm) {
-        orderForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // Stop aksi default
-            
+        orderForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
             const form = new FormData(e.target);
-            const paymentMethod = form.get('payment'); // Ambil value <select>
+            
+            // 1. Siapkan data untuk API
+            const orderItems = cart.map(ci => {
+                const p = products.find(prod => prod.id === ci.id);
+                return {
+                    id: p.id,
+                    name: p.name,
+                    qty: ci.qty,
+                    price: p.price
+                };
+            });
+            const total = orderItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
+            
+            const orderData = {
+                customer_name: form.get('name'),
+                phone: form.get('phone'),
+                address: form.get('address'),
+                payment_method: form.get('payment'),
+                total_amount: total,
+                items: orderItems 
+            };
 
-            // ===========================================
-            // KASUS 1: JIKA BAYAR PAKE QRIS / E-WALLET
-            // ===========================================
-            if (paymentMethod === 'transfer') {
-                
-                // Ambil total dari keranjang (elemen yg udah ada)
-                const cartTotalEl = document.getElementById('cartTotal');
-                const currentTotal = cartTotalEl ? cartTotalEl.innerText : 'Rp 0';
+            // 2. Kirim ke Database (POST API)
+            try {
+                const apiResponse = await fetch(`${API_BASE_URL}/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
 
-                // Masukkan total harga ke modal
-                modalTotalPrice.innerText = currentTotal;
-
-                // Tampilkan modal QRIS-nya
-                paymentModal.classList.add('show');
+                if (!apiResponse.ok) {
+                    throw new Error('Gagal menyimpan pesanan ke database.');
+                }
                 
-                // Tutup modal form (checkout)
-                closeCheckout(); 
-            } 
-            // ===========================================
-            // KASUS 2: JIKA BAYAR PAKE COD
-            // ===========================================
-            else { // Asumsi 'cod'
-                const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+                const result = await apiResponse.json();
+                console.log('Order saved to DB:', result.orderId);
                 
-                // Ini semua kode WA lo yang lama, udah bener
-                let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
-                cart.forEach(ci => {
-                    const p = products.find(prod => prod.id === ci.id);
-                    message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
+                // 3. Buat Pesan WA (Sama seperti sebelumnya)
+                let message = `Halo CIKFRESH, saya mau pesan (Order ID: ${result.orderId}):\n\n`;
+                orderItems.forEach(item => {
+                    message += `- ${item.name} (*${item.qty}* x ${item.unit})\n`;
                 });
                 message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
                 message += `*Data Penerima:*\n`;
-                message += `Nama: ${form.get('name')}\n`;
-                message += `No. HP: ${form.get('phone')}\n`;
-                message += `Alamat: ${form.get('address')}\n`;
-                message += `Pembayaran: ${form.get('payment')}\n\n`; 
+                message += `Nama: ${orderData.customer_name}\n`;
+                message += `No. HP: ${orderData.phone}\n`;
+                message += `Alamat: ${orderData.address}\n`;
+                message += `Pembayaran: ${orderData.payment_method}\n\n`;
                 message += `Terima kasih!`;
 
                 const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
                 window.open(whatsappURL, '_blank');
                 
-                alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+                alert(`Pesanan berhasil disimpan (ID: ${result.orderId}) dan dialihkan ke WhatsApp.`);
                 
-                // Kosongkan keranjang
-                cart = [];
-                saveCart();
-                renderCart();
-                closeCheckout();
-                orderForm.reset();
+            } catch (error) {
+                console.error('Error saat checkout:', error);
+                alert('PESANAN GAGAL DISIMPAN. Cek console atau hubungi admin.');
             }
-        });
-    }
-
-    // --- LOGIKA UNTUK MENUTUP MODAL (ditaruh di luar) ---
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', () => {
-            paymentModal.classList.remove('show');
-        });
-    }
-
-    // Tutup juga kalo klik di luar area modal
-    if (paymentModal) {
-        paymentModal.addEventListener('click', (e) => {
-            if (e.target === paymentModal) {
-                paymentModal.classList.remove('show');
-            }
-        });
-    }
-
-    // --- LOGIKA SETELAH "SAYA SUDAH BAYAR" ---
-    if (confirmPaymentBtn) {
-        confirmPaymentBtn.addEventListener('click', () => {
-            // 1. Tutup modal
-            paymentModal.classList.remove('show');
-
-            // 2. Tampilkan pesan sukses
-            alert('Pembayaran Berhasil! Pesanan Anda sedang diproses.');
-
-            // 3. Kosongkan keranjang
+            
+            // 4. Reset Keranjang (Baik berhasil maupun gagal)
             cart = [];
             saveCart();
             renderCart();
-            
-            // 4. Reset form pesanan (karena 'orderForm' udah didefinisiin di atas)
-            if (orderForm) {
-                orderForm.reset();
-            }
+            closeCheckout();
         });
     }
 
-    // Initial Render
-    renderProducts();
-    renderCart();
-    
-    </script>
+    // Panggil fungsi utama saat halaman dimuat
+    fetchProducts();
+</script>
     
     <div class="modal-container" id="payment-modal">
         <div class="modal-content">
