@@ -9,9 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <style>   
+    <style> 
     /* =============== STYLE MODAL PEMBAYARAN =============== */
-   /* Latar belakang gelap */
+    /* Latar belakang gelap */
     .modal-container {
         position: fixed; /* Tetap di layar walaupun di-scroll */
         top: 0;
@@ -76,166 +76,169 @@
         width: 100%;
         /* Pakai class 'btn' yang udah ada di web lo */
     }
-        :root {
-            --green: #2e8b57;
-            --accent: #f2a541;
-            --muted: #6b7280;
-            --bg: #F8F9FA;
-            --card-bg: #FFFFFF;
-            --border-color: #E5E7EB;
-        }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Inter', system-ui, Arial, sans-serif; background: var(--bg); color: #0f172a; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        /* Header */
-        header { background: var(--card-bg); box-shadow: 0 2px 6px rgba(0,0,0,.06); position: sticky; top: 0; z-index: 50; }
-        .nav-container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-        .brand { display: flex; align-items: center; gap: 12px; }
-        .logo { width: 44px; height: 44px; background: linear-gradient(135deg, var(--green), #38b000); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
-        .brand-name { font-weight: 700; }
-        .brand-tagline { font-size: 13px; color: var(--muted); }
-        nav a { margin-left: 12px; color: var(--muted); text-decoration: none; font-weight: 500; }
-        nav a:hover { color: var(--green); }
-        /* Hero Section */
-        .hero { display: flex; gap: 32px; align-items: center; padding: 48px 0; }
-        .hero-left, .hero-right { flex: 1; }
-        h1 { margin: 0; font-size: 32px; line-height: 1.2; }
-        p.lead { color: var(--muted); margin-top: 8px; max-width: 500px; }
-        .cta { display: inline-block; margin-top: 16px; background: var(--green); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 500; transition: transform 0.2s; }
-        .cta:hover { transform: translateY(-2px); }
-        .tips-box { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(2,6,23,.06); }
-        .tips-box strong { font-size: 1.1em; }
-        .tips-box ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
-        /* Grid & Card (Hanya untuk produk, tapi kita simpan di sini) */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,.06); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(16,24,40,.1); }
-        .card-img { height: 160px; width: 100%; object-fit: cover; }
-        .card-body { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { font-weight: 700; }
-        .card-unit { font-size: 14px; color: var(--muted); }
-        .card-desc { font-size: 13px; color: var(--muted); margin: 10px 0; flex-grow: 1; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-        .price { font-weight: 700; font-size: 1.1em; }
-        .btn { background: var(--green); color: white; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; }
-        /* Cart */
-        .cart { position: fixed; right: 18px; bottom: 18px; background: linear-gradient(180deg, #fff, #f8fff8); padding: 16px; border-radius: 12px; box-shadow: 0 8px 20px rgba(2,6,23,.1); width: 340px; max-width: 90%; z-index: 100; }
-        .cart h3 { margin: 0 0 12px 0; }
-        .cart-list { max-height: 260px; overflow-y: auto; margin-bottom: 12px; }
-        .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); align-items: center; }
-        .cart-item-info { flex-grow: 1; }
-        .cart-item-title { font-weight: 700; }
-        .cart-item-price { font-size: 13px; color: var(--muted); }
-        .cart-item-actions { display: flex; align-items: center; gap: 8px; }
-        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
-        .remove-btn { border: none; background: transparent; cursor: pointer; padding: 0; }
-        .cart-total-line { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
-        #cartTotal { font-weight: 700; font-size: 1.2em; }
-        /* Checkout Modal */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2,6,23,.35); align-items: center; justify-content: center; padding: 20px; z-index: 200; }
-        .modal-content { background: white; border-radius: 12px; padding: 24px; max-width: 480px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .modal-content h3 { margin: 0 0 16px 0; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        form input, form textarea, form select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 8px; font-family: inherit; }
-        .form-group { margin-bottom: 12px; }
-        .form-footer { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
-        .btn-secondary { padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
-        footer { padding: 40px 0; color: var(--muted); text-align: center; }
-        /* Responsive */
-        @media (max-width: 800px) {
-            .hero { flex-direction: column; }
-            .hero-right { order: -1; width: 100%; }
-        }
-        /* Style untuk Testimoni Gambar */
-        .testimoni-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 16px;
-        }
-        .testimoni-card {
-            background: white;
-            border-radius: 12px;
-            padding: 8px; 
-            box-shadow: 0 6px 18px rgba(16,24,40,.08);
-            overflow: hidden;
-        }
-        .testimoni-card img {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        /* --- Style Footer Baru --- */
-        .site-footer {
-            background: var(--card-bg); /* Pakai warna putih kartu */
-            padding: 40px 0 20px 0;
-            margin-top: 40px; /* Jarak dari konten di atasnya */
-            border-top: 1px solid var(--border-color);
-            color: var(--muted);
-        }
-        
+    
+    /* === (INI KODE CSS LO YANG LAMA, UDAH BENER) === */
+    :root {
+        --green: #2e8b57;
+        --accent: #f2a541;
+        --muted: #6b7280;
+        --bg: #F8F9FA;
+        --card-bg: #FFFFFF;
+        --border-color: #E5E7EB;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', system-ui, Arial, sans-serif; background: var(--bg); color: #0f172a; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    /* Header */
+    header { background: var(--card-bg); box-shadow: 0 2px 6px rgba(0,0,0,.06); position: sticky; top: 0; z-index: 50; }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 44px; height: 44px; background: linear-gradient(135deg, var(--green), #38b000); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+    .brand-name { font-weight: 700; }
+    .brand-tagline { font-size: 13px; color: var(--muted); }
+    nav a { margin-left: 12px; color: var(--muted); text-decoration: none; font-weight: 500; }
+    nav a:hover { color: var(--green); }
+    /* Hero Section */
+    .hero { display: flex; gap: 32px; align-items: center; padding: 48px 0; }
+    .hero-left, .hero-right { flex: 1; }
+    h1 { margin: 0; font-size: 32px; line-height: 1.2; }
+    p.lead { color: var(--muted); margin-top: 8px; max-width: 500px; }
+    .cta { display: inline-block; margin-top: 16px; background: var(--green); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 500; transition: transform 0.2s; }
+    .cta:hover { transform: translateY(-2px); }
+    .tips-box { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(2,6,23,.06); }
+    .tips-box strong { font-size: 1.1em; }
+    .tips-box ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+    /* Grid & Card (Hanya untuk produk, tapi kita simpan di sini) */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,.06); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(16,24,40,.1); }
+    .card-img { height: 160px; width: 100%; object-fit: cover; }
+    .card-body { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-title { font-weight: 700; }
+    .card-unit { font-size: 14px; color: var(--muted); }
+    .card-desc { font-size: 13px; color: var(--muted); margin: 10px 0; flex-grow: 1; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .price { font-weight: 700; font-size: 1.1em; }
+    .btn { background: var(--green); color: white; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; }
+    /* Cart */
+    .cart { position: fixed; right: 18px; bottom: 18px; background: linear-gradient(180deg, #fff, #f8fff8); padding: 16px; border-radius: 12px; box-shadow: 0 8px 20px rgba(2,6,23,.1); width: 340px; max-width: 90%; z-index: 100; }
+    .cart h3 { margin: 0 0 12px 0; }
+    .cart-list { max-height: 260px; overflow-y: auto; margin-bottom: 12px; }
+    .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); align-items: center; }
+    .cart-item-info { flex-grow: 1; }
+    .cart-item-title { font-weight: 700; }
+    .cart-item-price { font-size: 13px; color: var(--muted); }
+    .cart-item-actions { display: flex; align-items: center; gap: 8px; }
+    .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
+    .remove-btn { border: none; background: transparent; cursor: pointer; padding: 0; }
+    .cart-total-line { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+    #cartTotal { font-weight: 700; font-size: 1.2em; }
+    /* Checkout Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2,6,23,.35); align-items: center; justify-content: center; padding: 20px; z-index: 200; }
+    .modal-content { background: white; border-radius: 12px; padding: 24px; max-width: 480px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .modal-content h3 { margin: 0 0 16px 0; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    form input, form textarea, form select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 8px; font-family: inherit; }
+    .form-group { margin-bottom: 12px; }
+    .form-footer { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+    .btn-secondary { padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; cursor: pointer; }
+    footer { padding: 40px 0; color: var(--muted); text-align: center; }
+    /* Responsive */
+    @media (max-width: 800px) {
+        .hero { flex-direction: column; }
+        .hero-right { order: -1; width: 100%; }
+    }
+    /* Style untuk Testimoni Gambar */
+    .testimoni-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 16px;
+    }
+    .testimoni-card {
+        background: white;
+        border-radius: 12px;
+        padding: 8px; 
+        box-shadow: 0 6px 18px rgba(16,24,40,.08);
+        overflow: hidden;
+    }
+    .testimoni-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+    /* --- Style Footer Baru --- */
+    .site-footer {
+        background: var(--card-bg); /* Pakai warna putih kartu */
+        padding: 40px 0 20px 0;
+        margin-top: 40px; /* Jarak dari konten di atasnya */
+        border-top: 1px solid var(--border-color);
+        color: var(--muted);
+    }
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr; /* Kolom 1 lebih besar */
+        gap: 30px;
+    }
+    .footer-col { font-size: 14px; }
+    .footer-col h4 {
+        margin: 0 0 12px 0;
+        font-weight: 700;
+        color: #0f172a; /* Warna teks utama */
+    }
+    .footer-about {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-top: 12px;
+        max-width: 300px;
+    }
+    .footer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .footer-nav a {
+        color: var(--muted);
+        text-decoration: none;
+        margin-left: 0; /* Hapus margin dari nav utama */
+    }
+    .footer-nav a:hover { color: var(--green); }
+    .footer-col address {
+        font-style: normal;
+        line-height: 1.6;
+    }
+    .footer-bottom {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+    }
+    @media (max-width: 800px) {
         .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr; /* Kolom 1 lebih besar */
-            gap: 30px;
+            grid-template-columns: 1fr; /* Jadi 1 kolom di HP */
+            gap: 24px;
         }
-        
-        .footer-col {
-            font-size: 14px;
-        }
-
-        .footer-col h4 {
-            margin: 0 0 12px 0;
-            font-weight: 700;
-            color: #0f172a; /* Warna teks utama */
-        }
-        
-        .footer-about {
-            font-size: 14px;
-            line-height: 1.6;
-            margin-top: 12px;
-            max-width: 300px;
-        }
-        
-        .footer-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .footer-nav a {
-            color: var(--muted);
-            text-decoration: none;
-            margin-left: 0; /* Hapus margin dari nav utama */
-        }
-        
-        .footer-nav a:hover {
-            color: var(--green);
-        }
-        
-        .footer-col address {
-            font-style: normal;
-            line-height: 1.6;
-        }
-        
-        .footer-bottom {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-        }
-        
-        /* Responsive untuk Footer */
-        @media (max-width: 800px) {
-            .footer-grid {
-                grid-template-columns: 1fr; /* Jadi 1 kolom di HP */
-                gap: 24px;
-            }
-        }
+    }
     </style>
 </head>
-<body>
+<body lang="id"> 
+    <div class="modal-container" id="payment-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close-btn">&times;</span>
+            <h2>Selesaikan Pembayaran</h2>
+            <p>Silakan scan QRIS di bawah ini:</p>
+            <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/375px-QR_code_for_mobile_English_Wikipedia.svg.png" 
+                alt="Contoh QRIS" 
+                class="qris-image"
+            >
+            <h3>Total Bayar: <span id="modal-total-price">Rp 0</span></h3>
+            <p>Klik "Saya Sudah Bayar" jika sudah selesai.</p>
+            <button class="btn" id="confirm-payment-btn">Saya Sudah Bayar</button>
+        </div>
+    </div>
+
     <template id="cartItemTemplate">
         <div class="cart-item">
             <div class="cart-item-info">
@@ -249,6 +252,21 @@
                 <button class="remove-btn" onclick="" title="Hapus item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#c33"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                 </button>
+            </div>
+        </div>
+    </template>
+    
+    <template id="productCardTemplate">
+        <div class="card">
+            <img class="card-img" src="" alt="">
+            <div class="card-body">
+                <h4 class="card-title">Nama Produk</h4>
+                <span class="card-unit">per unit</span>
+                <p class="card-desc">Deskripsi singkat produk.</p>
+                <div class="card-footer">
+                    <span class="price">Rp 0</span>
+                    <button class="btn add-to-cart-btn">Tambah</button>
+                </div>
             </div>
         </div>
     </template>
@@ -291,7 +309,13 @@
             </div>
         </section>
 
-       <section id="testimoni" style="margin-top:40px;">
+        <section id="produk" style="margin-top:40px;">
+            <h2>Produk Kami</h2>
+            <div class="grid" id="productGrid">
+                </div>
+        </section>
+        
+        <section id="testimoni" style="margin-top:40px;">
             <h2>Apa Kata Pelanggan?</h2>
             <div class="testimoni-grid">
                 <div class="testimoni-card">
@@ -305,7 +329,7 @@
                 </div>
             </div>
         </section>
-        </main>
+    </main>
 
     <div class="cart" id="cartBox">
         <h3>Keranjang</h3>
@@ -346,287 +370,278 @@
     </div>
 
     <footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      
-      <div class="footer-col">
-        <div class="brand">
-          <div class="logo">CF</div>
-          <div class="brand-name">CIKFRESH</div>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <div class="brand">
+              <div class="logo">CF</div>
+              <div class="brand-name">CIKFRESH</div>
+            </div>
+            <p class="footer-about muted">
+              Toko sayur online lokal Anda. Segar, cepat, dan terpercaya, langsung dari petani ke dapur Anda di Serang Baru & sekitarnya.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Halaman</h4>
+            <nav class="footer-nav">
+              <a href="index.html">Home</a>
+              <a href="produk.html">Produk</a>
+              <a href="testimoni.html">Testimoni</a>
+              <a href="tentang.html">Tentang Kami</a>
+              <a href="kontak.html">Kontak</a>
+            </nav>
+          </div>
+          <div class="footer-col">
+            <h4>Alamat Kami</h4>
+            <address class="muted">
+              Jalan Raya Perumahan KSB, Sukaragam, Kec. Serang Baru, Bekasi, Jawa Barat (17330)
+            </address>
+          </div>
         </div>
-        <p class="footer-about muted">
-          Toko sayur online lokal Anda. Segar, cepat, dan terpercaya, langsung dari petani ke dapur Anda di Serang Baru & sekitarnya.
-        </p>
+        <div class="footer-bottom">
+          <p class="muted" style="font-size: 13px; margin: 0;">© CIKFRESH — Prototype Tugas</p>
+        </div>
       </div>
-      
-      <div class="footer-col">
-        <h4>Halaman</h4>
-        <nav class="footer-nav">
-          <a href="index.html">Home</a>
-          <a href="produk.html">Produk</a>
-          <a href="testimoni.html">Testimoni</a>
-          <a href="tentang.html">Tentang Kami</a>
-          <a href="kontak.html">Kontak</a>
-        </nav>
-      </div>
-      
-      <div class="footer-col">
-        <h4>Alamat Kami</h4>
-        <address class="muted">
-          Jalan Raya Perumahan KSB, Sukaragam, Kec. Serang Baru, Bekasi, Jawa Barat (17330)
-        </address>
-      </div>
-    </div>
-    
-    <div class="footer-bottom">
-      <p class="muted" style="font-size: 13px; margin: 0;">© CIKFRESH — Prototype Tugas</p>
-    </div>
-  </div>
-</footer>
+    </footer>
 
     <script>
-    // --- GANTI NOMOR WHATSAPP DI SINI ---
-    const WHATSAPP_NUMBER = '62895365249519'; 
-    const API_BASE_URL = 'http://localhost:3000/api'; // Alamat API Backend
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // ============= LOGIKA KERANJANG DAN DATABASE =============
-    let products = []; // Produk sekarang akan disimpan di sini setelah diambil dari API
-    let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
-    
-    // Element selectors (Sama seperti sebelumnya)
-    const productGrid = document.getElementById('productGrid');
-    const productCardTemplate = document.getElementById('productCardTemplate');
-    const cartList = document.getElementById('cartList');
-    const cartItemTemplate = document.getElementById('cartItemTemplate');
-    const cartTotalEl = document.getElementById('cartTotal');
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const checkoutModal = document.getElementById('checkoutModal');
-    
-    function saveCart() {
-        localStorage.setItem('cikfreshCart', JSON.stringify(cart));
-    }
+        // --- GANTI NOMOR WHATSAPP DI SINI ---
+        const WHATSAPP_NUMBER = '62895365249519'; // Ganti dengan nomor WA tujuan (diawali 62)
 
-    // FUNGSI BARU: Ambil data produk dari backend
-    async function fetchProducts() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/products`);
-            if (!response.ok) {
-                throw new Error('Gagal mengambil data produk dari API');
-            }
-            products = await response.json();
-            
-            // Setelah data diambil, baru render produk dan keranjang
-            renderProducts();
-            renderCart();
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            // Tampilkan pesan error di halaman produk jika gagal
-            if (productGrid) {
-                 productGrid.innerHTML = '<p style="color:red; text-align:center;">Gagal memuat produk. Pastikan server backend (node server.js) sedang berjalan.</p>';
-            }
+        // --- DAFTAR PRODUK ---
+        const products = [
+            {id:1, name:'Terong Ungu', unit:'500 gr', price:10000, desc:'Terong ungu segar ukuran sedang', image: 'images/Terong-Ungu.jpg'},
+            {id:2, name:'Jeruk Nipis', unit:'250 gr', price:8000, desc:'Jeruk nipis segar kaya vitamin C', image: 'images/Jeruk-Nipis.jpg'},
+            {id:3, name:'Pare', unit:'1 buah', price:7000, desc:'Pare hijau segar untuk tumisan', image: 'images/Pare.jpg'},
+            {id:4, name:'Terong Lalap', unit:'250 gr', price:6000, desc:'Terong bulat hijau untuk lalapan', image: 'images/Terong-Lalap.jpg'},
+            {id:5, name:'Tomat', unit:'500 gr', price:9000, desc:'Tomat merah segar dan berair', image: 'images/Tomat.jpg'},
+            {id:6, name:'Wortel', unit:'500 gr', price:12000, desc:'Wortel impor yang manis & renyah', image: 'images/Wortel.jpg'},
+            {id:7, name:'Timun', unit:'500 gr', price:8000, desc:'Timun segar cocok untuk lalapan', image: 'images/Timun.jpg'},
+            {id:8, name:'Daun Bawang', unit:'1 ikat', price:5000, desc:'Daun bawang penyedap masakan', image: 'images/Daun-Bawang.jpg'},
+            {id:11, name:'Brokoli', unit:'500 gr', price:18000, desc:'Brokoli hijau segar dan padat', image: 'images/Brokoli.jpg'},
+            {id:12, name:'Labu Siam', unit:'1 buah', price:6000, desc:'Labu siam segar untuk sayur bening', image: 'images/Labu-Siam.jpg'}
+        ];
+
+        // --- AMBIL SEMUA ELEMEN SEKALI DI AWAL ---
+        const productGrid = document.getElementById('productGrid');
+        const productCardTemplate = document.getElementById('productCardTemplate');
+        const cartList = document.getElementById('cartList');
+        const cartItemTemplate = document.getElementById('cartItemTemplate');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        
+        // Elemen Modal Checkout (Form)
+        const checkoutModal = document.getElementById('checkoutModal');
+        const orderForm = document.getElementById('orderForm'); // Ini NYARI <form id="orderForm">
+
+        // Elemen Modal QRIS (Yang lo pasang di baris 660)
+        const paymentModal = document.getElementById('payment-modal'); // Ini NYARI <div id="payment-modal">
+        const closeModalBtn = document.getElementById('modal-close-btn');
+        const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+        const modalTotalPrice = document.getElementById('modal-total-price');
+
+        // Keranjang
+        let cart = JSON.parse(localStorage.getItem('cikfreshCart')) || [];
+
+        // --- FUNGSI-FUNGSI LOGIKA ---
+
+        function saveCart() {
+            localStorage.setItem('cikfreshCart', JSON.stringify(cart));
         }
-    }
 
-    function renderProducts() {
-        // HANYA jalan di halaman yang punya grid produk
-        if (!productGrid || !productCardTemplate) return; 
+        function renderProducts() {
+            // Cek dulu 'productGrid' ada atau nggak
+            if (!productGrid || !productCardTemplate) {
+                console.log('Tidak ada wadah produk (#productGrid) di halaman ini.');
+                return; 
+            }
+            
+            productGrid.innerHTML = ''; // Kosongin dulu
+            products.forEach(p => {
+                const card = document.importNode(productCardTemplate.content, true);
+                card.querySelector('.card-img').src = p.image;
+                card.querySelector('.card-img').alt = p.name;
+                card.querySelector('.card-title').textContent = p.name;
+                card.querySelector('.card-unit').textContent = p.unit;
+                // 'card-desc' mungkin gak ada di template lo, kita cek
+                const descEl = card.querySelector('.card-desc');
+                if (descEl) descEl.textContent = p.desc;
+                
+                card.querySelector('.price').textContent = `Rp ${numberWithCommas(p.price)}`;
+                
+                // 'add-to-cart-btn' mungkin gak ada di template lo, kita cek
+                const addBtn = card.querySelector('.add-to-cart-btn');
+                if(addBtn) addBtn.onclick = () => addToCart(p.id);
 
-        // Kosongkan grid (jika ada pesan loading)
-        productGrid.innerHTML = ''; 
+                productGrid.appendChild(card);
+            });
+        }
 
-        products.forEach(p => {
-            const card = document.importNode(productCardTemplate.content, true);
-            // Menggunakan image_url dari database
-            card.querySelector('.card-img').src = p.image_url; 
-            card.querySelector('.card-img').alt = p.name;
-            card.querySelector('.card-title').textContent = p.name;
-            card.querySelector('.card-unit').textContent = p.unit;
-            card.querySelector('.card-desc').textContent = p.description;
-            card.querySelector('.price').textContent = `Rp ${numberWithCommas(p.price)}`;
-            // ID produk harus sama dengan ID dari database
-            card.querySelector('.add-to-cart-btn').onclick = () => addToCart(p.id); 
-            productGrid.appendChild(card);
-        });
-    }
+        function renderCart() {
+            if (!cartList || !cartItemTemplate) return;
 
-    function renderCart() {
-        if (!cartList || !cartItemTemplate) return;
-
-        cartList.innerHTML = '';
-        if (cart.length === 0) {
-            cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
+            cartList.innerHTML = '';
+            if (cart.length === 0) {
+                cartList.innerHTML = '<div class="muted" style="font-size: 14px;">Keranjang kosong</div>';
+            } else {
+                cart.forEach(ci => {
+                    const p = products.find(prod => prod.id === ci.id);
+                    if (!p) return;
+                    const item = document.importNode(cartItemTemplate.content, true);
+                    item.querySelector('.cart-item-title').textContent = p.name;
+                    item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
+                    item.querySelector('.qty').textContent = ci.qty;
+                    const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
+                    actions[0].onclick = () => changeQty(p.id, -1);
+                    actions[1].onclick = () => changeQty(p.id, 1);
+                    actions[2].onclick = () => removeFromCart(p.id);
+                    cartList.appendChild(item);
+                });
+            }
+            
             saveCart();
             updateCartTotal();
-            return;
         }
 
-        cart.forEach(ci => {
-            // Cari produk berdasarkan ID dari array 'products' yang sudah diisi dari database
-            const p = products.find(prod => prod.id === ci.id); 
-            if (!p) return; // Skip jika produk tidak ditemukan (misal sudah dihapus dari DB)
-
-            const item = document.importNode(cartItemTemplate.content, true);
-            item.querySelector('.cart-item-title').textContent = p.name;
-            item.querySelector('.cart-item-price').textContent = `Rp ${numberWithCommas(p.price)}`;
-            item.querySelector('.qty').textContent = ci.qty;
-            const actions = item.querySelector('.cart-item-actions').querySelectorAll('button');
-            actions[0].onclick = () => changeQty(p.id, -1);
-            actions[1].onclick = () => changeQty(p.id, 1);
-            actions[2].onclick = () => removeFromCart(p.id);
-            cartList.appendChild(item);
-        });
-        saveCart();
-        updateCartTotal();
-    }
-
-    function addToCart(id) {
-        // ... (Fungsi keranjang sama)
-        const found = cart.find(ci => ci.id === id);
-        if (found) {
-            found.qty++;
-        } else {
-            cart.push({ id, qty: 1 });
-        }
-        renderCart(); 
-    }
-
-    function removeFromCart(id) {
-        // ... (Fungsi keranjang sama)
-        cart = cart.filter(c => c.id !== id);
-        renderCart(); 
-    }
-
-    function changeQty(id, delta) {
-        // ... (Fungsi keranjang sama)
-        const item = cart.find(c => c.id === id);
-        if (!item) return;
-        item.qty += delta;
-        if (item.qty < 1) {
-            removeFromCart(id);
-        } else {
-            renderCart();
-        }
-    }
-
-    function updateCartTotal() {
-        if (!cartTotalEl) return;
-        
-        const total = cart.reduce((sum, ci) => {
-            const product = products.find(p => p.id === ci.id);
-            if (!product) return sum;
-            return sum + (product.price * ci.qty);
-        }, 0);
-        cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
-        if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
-    }
-
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
-    // ============= FUNGSI BARU: SIMPAN KE DATABASE & WA =============
-    function openCheckout() { 
-        if (checkoutModal) checkoutModal.style.display = 'flex'; 
-    }
-    function closeCheckout() { 
-        if (checkoutModal) checkoutModal.style.display = 'none'; 
-    }
-
-    const orderForm = document.getElementById('orderForm');
-    if (orderForm) {
-        orderForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const form = new FormData(e.target);
-            
-            // 1. Siapkan data untuk API
-            const orderItems = cart.map(ci => {
-                const p = products.find(prod => prod.id === ci.id);
-                return {
-                    id: p.id,
-                    name: p.name,
-                    qty: ci.qty,
-                    price: p.price
-                };
-            });
-            const total = orderItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
-            
-            const orderData = {
-                customer_name: form.get('name'),
-                phone: form.get('phone'),
-                address: form.get('address'),
-                payment_method: form.get('payment'),
-                total_amount: total,
-                items: orderItems 
-            };
-
-            // 2. Kirim ke Database (POST API)
-            try {
-                const apiResponse = await fetch(`${API_BASE_URL}/orders`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
-
-                if (!apiResponse.ok) {
-                    throw new Error('Gagal menyimpan pesanan ke database.');
-                }
-                
-                const result = await apiResponse.json();
-                console.log('Order saved to DB:', result.orderId);
-                
-                // 3. Buat Pesan WA (Sama seperti sebelumnya)
-                let message = `Halo CIKFRESH, saya mau pesan (Order ID: ${result.orderId}):\n\n`;
-                orderItems.forEach(item => {
-                    message += `- ${item.name} (*${item.qty}* x ${item.unit})\n`;
-                });
-                message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
-                message += `*Data Penerima:*\n`;
-                message += `Nama: ${orderData.customer_name}\n`;
-                message += `No. HP: ${orderData.phone}\n`;
-                message += `Alamat: ${orderData.address}\n`;
-                message += `Pembayaran: ${orderData.payment_method}\n\n`;
-                message += `Terima kasih!`;
-
-                const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
-                window.open(whatsappURL, '_blank');
-                
-                alert(`Pesanan berhasil disimpan (ID: ${result.orderId}) dan dialihkan ke WhatsApp.`);
-                
-            } catch (error) {
-                console.error('Error saat checkout:', error);
-                alert('PESANAN GAGAL DISIMPAN. Cek console atau hubungi admin.');
+        function addToCart(id) {
+            const found = cart.find(ci => ci.id === id);
+            if (found) {
+                found.qty++;
+            } else {
+                cart.push({ id, qty: 1 });
             }
-            
-            // 4. Reset Keranjang (Baik berhasil maupun gagal)
-            cart = [];
-            saveCart();
             renderCart();
-            closeCheckout();
-        });
-    }
+        }
 
-    // Panggil fungsi utama saat halaman dimuat
-    fetchProducts();
-</script>
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            renderCart();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty < 1) {
+                removeFromCart(id);
+            } else {
+                renderCart();
+            }
+        }
+
+        function updateCartTotal() {
+            if (!cartTotalEl) return;
+            
+            const total = cart.reduce((sum, ci) => {
+                const product = products.find(p => p.id === ci.id);
+                if (!product) return sum;
+                return sum + (product.price * ci.qty);
+            }, 0);
+            cartTotalEl.textContent = `Rp ${numberWithCommas(total)}`;
+            if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // --- LOGIKA MODAL & FORM (YANG UDAH BENER) ---
+
+        // (Fungsi 'openCheckout' & 'closeCheckout' harus global, jadi kita tempel ke 'window')
+        // Ini biar tombol 'onclick="openCheckout()"' di HTML bisa nemu fungsinya
+        window.openCheckout = function() { 
+            if (checkoutModal) checkoutModal.style.display = 'flex'; 
+        }
+        window.closeCheckout = function() { 
+            if (checkoutModal) checkoutModal.style.display = 'none'; 
+        }
+
+        if (orderForm) {
+            orderForm.addEventListener('submit', function (e) {
+                e.preventDefault(); 
+                const form = new FormData(e.target);
+                // Ini ngambil value dari <select name="payment">
+                const paymentMethod = form.get('payment'); 
+
+                // ===========================================
+                // KASUS 1: JIKA BAYAR PAKE 'transfer'
+                // ===========================================
+                if (paymentMethod === 'transfer') {
+                    const currentTotal = cartTotalEl ? cartTotalEl.innerText : 'Rp 0';
+                    if (modalTotalPrice) modalTotalPrice.innerText = currentTotal;
+                    
+                    // Tampilkan modal QRIS
+                    if (paymentModal) paymentModal.classList.add('show');
+                    
+                    // Tutup modal form
+                    closeCheckout(); 
+                } 
+                // ===========================================
+                // KASUS 2: JIKA BAYAR PAKE 'cod'
+                // ===========================================
+                else { 
+                    const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+                    let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
+                    cart.forEach(ci => {
+                        const p = products.find(prod => prod.id === ci.id);
+                        if (!p) return; // Jaga-jaga
+                        message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
+                    });
+                    message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
+                    message += `*Data Penerima:*\n`;
+                    message += `Nama: ${form.get('name')}\n`;
+                    message += `No. HP: ${form.get('phone')}\n`;
+                    message += `Alamat: ${form.get('address')}\n`;
+                    message += `Pembayaran: ${form.get('payment')}\n\n`; 
+                    message += `Terima kasih!`;
+
+                    const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+                    window.open(whatsappURL, '_blank');
+                    alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+                    
+                    cart = [];
+                    renderCart();
+                    closeCheckout();
+                    orderForm.reset();
+                }
+            });
+        }
+
+        // --- LOGIKA TOMBOL MODAL QRIS ---
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                if (paymentModal) paymentModal.classList.remove('show');
+            });
+        }
+
+        if (paymentModal) {
+            paymentModal.addEventListener('click', (e) => {
+                if (e.target === paymentModal) {
+                    paymentModal.classList.remove('show');
+                }
+            });
+        }
+
+        if (confirmPaymentBtn) {
+            confirmPaymentBtn.addEventListener('click', () => {
+                if (paymentModal) paymentModal.classList.remove('show');
+                alert('Pembayaran Berhasil! Pesanan Anda sedang diproses.');
+                cart = [];
+                renderCart();
+                if (orderForm) {
+                    orderForm.reset();
+                }
+            });
+        }
+
+        // --- INITIAL RENDER (JALANKAN PAS HALAMAN DIBUKA) ---
+        renderProducts();
+        renderCart();
+
+    }); // <-- Penutup DOMContentLoaded
+    </script>
     
-    <div class="modal-container" id="payment-modal">
-        <div class="modal-content">
-            <span class="modal-close" id="modal-close-btn">&times;</span>
-            <h2>Selesaikan Pembayaran</h2>
-            <p>Silakan scan QRIS di bawah ini:</p>
-            
-            <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/375px-QR_code_for_mobile_English_Wikipedia.svg.png" 
-            alt="Contoh QRIS" 
-            class="qris-image"
-            >
-            
-            <h3>Total Bayar: <span id="modal-total-price">Rp 0</span></h3>
-            
-            <p>Klik "Saya Sudah Bayar" jika sudah selesai.</p>
-            
-            <button class="btn" id="confirm-payment-btn">Saya Sudah Bayar</button>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
