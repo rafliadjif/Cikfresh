@@ -8,7 +8,74 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
+
+    <style>   
+    /* =============== STYLE MODAL PEMBAYARAN =============== */
+   /* Latar belakang gelap */
+    .modal-container {
+        position: fixed; /* Tetap di layar walaupun di-scroll */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Transparan gelap */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000; /* Muncul di atas segalanya */
+
+        /* INI YANG BIKIN SEMBUNYI */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Biar muncul pas ditambah class 'show' */
+    .modal-container.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Kotak putih di tengah */
+    .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px; /* Maksimal lebar 400px */
+        text-align: center;
+        position: relative; /* Biar tombol close bisa nempel */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Tombol close (X) */
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+    }
+    .modal-close:hover {
+        color: #000;
+    }
+
+    /* Gambar QRIS-nya */
+    .qris-image {
+        width: 200px; /* Ukuran gambar QR */
+        height: 200px;
+        margin: 15px 0;
+        border: 1px solid #ddd;
+    }
+
+    /* Tombol "Saya Sudah Bayar" */
+    #confirm-payment-btn {
+        margin-top: 15px;
+        width: 100%;
+        /* Pakai class 'btn' yang udah ada di web lo */
+    }
         :root {
             --green: #2e8b57;
             --accent: #f2a541;
@@ -448,47 +515,145 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    // Checkout Logic
-    function openCheckout() { if (checkoutModal) checkoutModal.style.display = 'flex'; }
-    function closeCheckout() { if (checkoutModal) checkoutModal.style.display = 'none'; }
-
-    // Pastikan form order hanya berjalan jika ada
+    // --- Ambil Elemen Modal & Form di Awal ---
+    // (PENTING: Kita definisikan di luar biar bisa diakses semua fungsi)
+    const checkoutModal = document.getElementById('checkoutModal');
     const orderForm = document.getElementById('orderForm');
+    const paymentModal = document.getElementById('payment-modal');
+    const closeModalBtn = document.getElementById('modal-close-btn');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    const modalTotalPrice = document.getElementById('modal-total-price');
+
+    // --- Checkout Logic ---
+    function openCheckout() { 
+        if (checkoutModal) checkoutModal.style.display = 'flex'; 
+    }
+    function closeCheckout() { 
+        if (checkoutModal) checkoutModal.style.display = 'none'; 
+    }
+
+    // --- Logika untuk Form Pemesanan (GABUNGAN) ---
     if (orderForm) {
         orderForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Stop aksi default
+            
             const form = new FormData(e.target);
-            const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
-            
-            let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
-            cart.forEach(ci => {
-                const p = products.find(prod => prod.id === ci.id);
-                message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
-            });
-            message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
-            message += `*Data Penerima:*\n`;
-            message += `Nama: ${form.get('name')}\n`;
-            message += `No. HP: ${form.get('phone')}\n`;
-            message += `Alamat: ${form.get('address')}\n`;
-            message += `Pembayaran: ${form.get('payment')}\n\n`;
-            message += `Terima kasih!`;
+            const paymentMethod = form.get('payment'); // Ambil value <select>
 
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
-            
-            alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
-            
-            // ============= PERUBAHAN 5: SIMPAN KERANJANG KOSONG SETELAH CHECKOUT =============
+            // ===========================================
+            // KASUS 1: JIKA BAYAR PAKE QRIS / E-WALLET
+            // ===========================================
+            if (paymentMethod === 'transfer') {
+                
+                // Ambil total dari keranjang (elemen yg udah ada)
+                const cartTotalEl = document.getElementById('cartTotal');
+                const currentTotal = cartTotalEl ? cartTotalEl.innerText : 'Rp 0';
+
+                // Masukkan total harga ke modal
+                modalTotalPrice.innerText = currentTotal;
+
+                // Tampilkan modal QRIS-nya
+                paymentModal.classList.add('show');
+                
+                // Tutup modal form (checkout)
+                closeCheckout(); 
+            } 
+            // ===========================================
+            // KASUS 2: JIKA BAYAR PAKE COD
+            // ===========================================
+            else { // Asumsi 'cod'
+                const total = cart.reduce((s,ci)=>s + products.find(p=>p.id===ci.id).price * ci.qty,0);
+                
+                // Ini semua kode WA lo yang lama, udah bener
+                let message = `Halo CIKFRESH, saya mau pesan:\n\n`;
+                cart.forEach(ci => {
+                    const p = products.find(prod => prod.id === ci.id);
+                    message += `- ${p.name} (*${ci.qty}* x ${p.unit})\n`;
+                });
+                message += `\n*Total: Rp ${numberWithCommas(total)}*\n\n`;
+                message += `*Data Penerima:*\n`;
+                message += `Nama: ${form.get('name')}\n`;
+                message += `No. HP: ${form.get('phone')}\n`;
+                message += `Alamat: ${form.get('address')}\n`;
+                message += `Pembayaran: ${form.get('payment')}\n\n`; 
+                message += `Terima kasih!`;
+
+                const whatsappURL = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+                
+                alert('Pesanan sedang dialihkan ke WhatsApp. Silakan kirim pesan yang sudah disiapkan.');
+                
+                // Kosongkan keranjang
+                cart = [];
+                saveCart();
+                renderCart();
+                closeCheckout();
+                orderForm.reset();
+            }
+        });
+    }
+
+    // --- LOGIKA UNTUK MENUTUP MODAL (ditaruh di luar) ---
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+        });
+    }
+
+    // Tutup juga kalo klik di luar area modal
+    if (paymentModal) {
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) {
+                paymentModal.classList.remove('show');
+            }
+        });
+    }
+
+    // --- LOGIKA SETELAH "SAYA SUDAH BAYAR" ---
+    if (confirmPaymentBtn) {
+        confirmPaymentBtn.addEventListener('click', () => {
+            // 1. Tutup modal
+            paymentModal.classList.remove('show');
+
+            // 2. Tampilkan pesan sukses
+            alert('Pembayaran Berhasil! Pesanan Anda sedang diproses.');
+
+            // 3. Kosongkan keranjang
             cart = [];
             saveCart();
             renderCart();
-            closeCheckout();
+            
+            // 4. Reset form pesanan (karena 'orderForm' udah didefinisiin di atas)
+            if (orderForm) {
+                orderForm.reset();
+            }
         });
     }
 
     // Initial Render
     renderProducts();
     renderCart();
-</script>
+    
+    </script>
+    
+    <div class="modal-container" id="payment-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close-btn">&times;</span>
+            <h2>Selesaikan Pembayaran</h2>
+            <p>Silakan scan QRIS di bawah ini:</p>
+            
+            <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/375px-QR_code_for_mobile_English_Wikipedia.svg.png" 
+            alt="Contoh QRIS" 
+            class="qris-image"
+            >
+            
+            <h3>Total Bayar: <span id="modal-total-price">Rp 0</span></h3>
+            
+            <p>Klik "Saya Sudah Bayar" jika sudah selesai.</p>
+            
+            <button class="btn" id="confirm-payment-btn">Saya Sudah Bayar</button>
+        </div>
+    </div>
 </body>
 </html>
